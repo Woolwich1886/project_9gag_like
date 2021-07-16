@@ -1,6 +1,4 @@
 from django.db import models
-from django.db.models.fields import DateField
-from django.db.models.fields.files import ImageField
 from django.conf import settings
 
 User = settings.AUTH_USER_MODEL

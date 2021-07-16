@@ -25,7 +25,7 @@ class Post(models.Model):
     title = models.CharField(max_length=100, verbose_name='Название поста')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория', null=False)
     #image = ImageField()
-    pub_date = models.DateTimeField(auto_now_add=True)
+    pub_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор поста')
 
     def __str__(self):

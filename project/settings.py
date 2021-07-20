@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,7 +42,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     #мои приложения
-    'wall'
+    'wall',
+    'account',
+    'profiles',
 ]
 
 MIDDLEWARE = [
@@ -60,7 +63,7 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "templates")], # подключил папку шаблонов, потому что она не находится в папке приложения
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -95,14 +98,16 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
+        # минимальная длина пароля 1
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {'min_length': 1}
     },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    #отключить проверку часто встречающихся паролей{
+    #    'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+   # },
+   # чтобы пароль мог содержать одни цифры{
+        #'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+  #  },
 ]
 
 
@@ -131,6 +136,9 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # мои настройки
+AUTH_USER_MODEL = 'profiles.SocialUser' 
+LOGOUT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASES': [

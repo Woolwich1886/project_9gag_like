@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-ewo)3o64shxms_m@_cd&%!2ttf7ug&m$+s7^%%3*_k^#cx07x3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['http://localhost:3000/', '127.0.0.1']
 
 
 # Application definition
@@ -43,8 +43,6 @@ INSTALLED_APPS = [
     'rest_framework',
     #мои приложения
     'wall',
-    'account',
-    'profiles',
 ]
 
 MIDDLEWARE = [
@@ -136,7 +134,7 @@ STATIC_URL = '/static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # мои настройки
-AUTH_USER_MODEL = 'profiles.SocialUser' 
+#AUTH_USER_MODEL = 'profiles.SocialUser' 
 LOGOUT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
@@ -145,3 +143,4 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+CORS_ORIGIN_ALLOW_ALL = True

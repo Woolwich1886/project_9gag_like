@@ -1,8 +1,9 @@
+from django import urls
 from django.urls import path
 
-from .views import api_postview, postview
+from .views import postview, detail_postview
 
 urlpatterns = [
-    path('api/', api_postview),
-    path('', postview)
+    path('', postview),
+    path('<int:id>/', detail_postview),
 ]

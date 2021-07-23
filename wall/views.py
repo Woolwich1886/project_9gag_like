@@ -9,14 +9,13 @@ from rest_framework.response import Response
 # Create your views here.
 
 
-@api_view(['GET'])
-def api_postview(request, *args, **kwargs):
-    qs = Post.objects.all()
-    ser = PostSerializer(qs, many=True)
-    return Response(ser.data, status=200)
-
+def detail_postview(request, id, *args, **kwargs):
+    post_list = Post.objects.filter(id=id)
+    return render(request, 'pages/home.html', {'post_list': post_list})
 
 def postview(request, *args, **kwargs):
     posts = Post.objects.all()
-    return render(request, 'pages/home.html', {'posts': posts})
+    #post_list = [x.serialize() for x in posts]
+    post_list=posts
+    return render(request, 'pages/home.html', {'post_list': post_list})
 

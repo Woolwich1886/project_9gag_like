@@ -1,14 +1,41 @@
 {% extends 'base.html' %}
 
-{% block title %}Главная{% endblock title %}
+{% block title %}Лента{% endblock title %}
 
 {% block content %}
 <h1>Посты будут</h1>
-
-{{post_list}}
+<div id="posts"></div>
 <script>
+const listOfPosts = document.getElementById("posts")
 
 
+function formatPostObj(post_object_to_format) {
+    var postIsFormatted = "<div>" + post.id + 
+                        "<p>" + post.title + 
+                        "</p><p>" + post.category + 
+                        "</p><p>" + post.rating + 
+                        "</p></div>"
+    return postIsFormatted
+}
 
+
+function loadPosts (){
+    
+    xhr = new XMLHttpRequest()
+    //xhr.responseType = 'json'
+    xhr.open('GET', '/api/posts/')
+    xhr.onload = function() {
+        const items = xhr.response
+        var postsFeed = ''
+        var i
+        for (i=0; i<items.length; i++) {
+            var obj = items[i]
+            var currentItem = formatPostObj(obj)
+            postsFeed += currentItem
+        }
+        listOfPosts.innerHTML = postsFeed
+    }
+    xhr.send()
+}
 </script>
 {% endblock content %}

@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-ewo)3o64shxms_m@_cd&%!2ttf7ug&m$+s7^%%3*_k^#cx07x3
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['http://localhost:3000/', '127.0.0.1']
+ALLOWED_HOSTS = ['http://localhost:3000/', '127.0.0.1', 'http://localhost:8000/', 'localhost']
 
 
 # Application definition
@@ -128,6 +128,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -139,8 +140,32 @@ LOGOUT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
 REST_FRAMEWORK = {
+    
     'DEFAULT_PERMISSION_CLASES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
 CORS_ORIGIN_ALLOW_ALL = True
+MEDIA_ROOT = os.path.join(BASE_DIR, "images")
+MEDIA_URL = 'images/'
+POST_RATE_OPTIONS = ['upvote', 'downvote']
+DEFAULT_RENDERER_CLASSES = [
+        'rest_framework.renderers.JSONRenderer',
+    ]
+DEFAULT_AUTHENTICATION_CLASSES =[
+    'rest_framework.authentication.SessionAuthentication'
+]
+# убрать после завершения проекта!!
+if DEBUG:
+   DEFAULT_RENDERER_CLASSES += [
+       'rest_framework.renderers.BrowsableAPIRenderer',
+   ]
+   DEFAULT_AUTHENTICATION_CLASSES += [
+       'project.rest_api.test.TestAuthentication'
+   ]
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': DEFAULT_AUTHENTICATION_CLASSES,
+    'DEFAULT_RENDERER_CLASSES': DEFAULT_RENDERER_CLASSES
+     
+}

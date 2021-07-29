@@ -11,11 +11,13 @@ from rest_framework.response import Response
 
 def detail_postview(request, id, *args, **kwargs):
     post_list = Post.objects.filter(id=id)
-    return render(request, 'pages/home.html', {'post_list': post_list})
+    if post_list:
+        post = post_list.first()
+    else:
+        raise Http404('not exists')
+    return render(request, 'pages/home.html', {'post_list': post})
 
 def postview(request, *args, **kwargs):
     posts = Post.objects.all()
-    #post_list = [x.serialize() for x in posts]
     post_list=posts
-    return render(request, 'pages/home.html', {'post_list': post_list})
-
+    return render(request, 'pages/home.html')

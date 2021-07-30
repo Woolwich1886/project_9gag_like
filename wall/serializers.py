@@ -32,12 +32,20 @@ class PostSerializer(serializers.ModelSerializer):
     category = serializers.StringRelatedField()
     author = serializers.StringRelatedField()
     rating = serializers.SerializerMethodField('get_rating')
+    upvotes = serializers.SerializerMethodField('get_upvotes')
+    downvotes = serializers.SerializerMethodField('get_downvotes')
+
     def get_image_url(self, obj):
         return ('http://localhost:8000' + obj.image.url)
     
-    def get_rating(self, obj):
-        return obj.upvotes-obj.downvotes
+    
 
+    def get_upvotes(self, obj):
+        return obj.upvotes.count()
+    def get_downvotes(self, obj):
+        return obj.downvotes.count()
+    def get_rating(self, obj):
+        return obj.upvotes.count()-obj.downvotes.count()
     class Meta:
         model = Post
         fields = ['id', 

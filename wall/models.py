@@ -1,5 +1,7 @@
 from django.db import models
 from django.conf import settings
+from django.db.models.enums import Choices
+from django.db.models.fields.related import OneToOneField
 
 User = settings.AUTH_USER_MODEL
 # Create your models here.
@@ -24,16 +26,18 @@ class Post(models.Model):
     image = models.ImageField(verbose_name='Изображение', upload_to='')
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор поста')
-    rating = models.ManyToManyField(User, related_name='votes', blank=True)
-    upvotes = models.IntegerField(default='0')
-    downvotes = models.IntegerField(default='0')
+    upvotes = models.ManyToManyField(User, related_name='upvotes', blank=True)
+    downvotes = models.ManyToManyField(User, related_name='downvotes', blank=True)
 
 
     def __str__(self):
         return self.title
-
+    
 
     class Meta:
         verbose_name_plural = 'Посты'
         verbose_name = 'Пост'
         ordering = ['-id'] # сперва новые посты (сортировка по id, а не по дате)
+
+class Upvote(models.Model):
+    post = models.OneToOneField(Post, related_name='Пост', on_delete=models.CASCADE)

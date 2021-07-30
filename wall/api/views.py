@@ -20,20 +20,27 @@ def post_rate_view(request, *args, **kwargs):
         post_id = data.get("id")
         vote_type = data.get("vote_type")
         qs = Post.objects.filter(id=post_id)
-        
+        print(request.user)
         if not qs.exists():
             return Response({}, status=404)
         obj = qs.first()
         if vote_type == "upvote":
             #obj.rating.add(request.user)
-            obj.upvotes += 1
-            obj.save()
+            obj.upvotes.add(request.user)
+            obj.downvotes.remove(request.user)
             serializer = PostSerializer(obj)
             return Response(serializer.data, status=200)
         elif vote_type == "downvote":
-            #obj.rating.add(request.user)
-            obj.downvotes += 1
-            obj.save()
+            obj.downvotes.add(request.user)
+            obj.upvotes.remove(request.user)
+            serializer = PostSerializer(obj)
+            return Response(serializer.data, status=200)
+        elif vote_type == "delupvote":
+            obj.upvotes.remove(request.user)
+            serializer = PostSerializer(obj)
+            return Response(serializer.data, status=200)
+        elif vote_type == "deldownvote":
+            obj.downvotes.remove(request.user)
             serializer = PostSerializer(obj)
             return Response(serializer.data, status=200)
     return Response({}, status=200) 

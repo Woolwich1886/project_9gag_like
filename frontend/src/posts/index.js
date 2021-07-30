@@ -1,8 +1,8 @@
-import {ListOfPosts, FormatPost, RateBtn} from './components'
+import {ListOfPosts, FormatPost, NormBtn} from './components'
 
 export {
     ListOfPosts,
     FormatPost,
-    RateBtn
+    NormBtn
     
 }

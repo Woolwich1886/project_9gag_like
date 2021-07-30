@@ -8,5 +8,5 @@ User = get_user_model()
 class TestAuthentication(authentication.BasicAuthentication):
     def authenticate(self, request):
         qs = User.objects.all()
-        user = qs.order_by("?").first
+        user = User.objects.first()
         return (user, None)

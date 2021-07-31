@@ -34,12 +34,23 @@ class PostSerializer(serializers.ModelSerializer):
     rating = serializers.SerializerMethodField('get_rating')
     upvotes = serializers.SerializerMethodField('get_upvotes')
     downvotes = serializers.SerializerMethodField('get_downvotes')
+    vote = serializers.SerializerMethodField('get_vote')
+
+
+    def get_vote(self, obj):
+        if self.context.get('req_user') in obj.upvotes.all():
+            return 'UP'
+        elif self.context.get('req_user') in obj.downvotes.all():
+            return 'DOWN'
+        return 'NO VOTE'
+
+    
 
     def get_image_url(self, obj):
         return ('http://localhost:8000' + obj.image.url)
     
     
-
+    
     def get_upvotes(self, obj):
         return obj.upvotes.count()
     def get_downvotes(self, obj):
@@ -57,5 +68,7 @@ class PostSerializer(serializers.ModelSerializer):
         'image_url',
         'rating',
         'upvotes',
-        'downvotes']
+        'downvotes',
+        'vote',
+           ]
     

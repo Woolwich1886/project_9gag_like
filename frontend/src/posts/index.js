@@ -1,4 +1,5 @@
-import {ListOfPosts, FormatPost, NormBtn} from './components'
+import {FormatPost, NormBtn} from './components'
+import {ListOfPosts} from './bedata'
 
 export {
     ListOfPosts,

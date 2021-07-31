@@ -7,8 +7,7 @@ from ..models import Post
 
 
 @api_view(['POST'])
-
-#@permission_classes([IsAuthenticated])
+@permission_classes([IsAuthenticated])
 def post_rate_view(request, *args, **kwargs):
     
     '''
@@ -25,23 +24,22 @@ def post_rate_view(request, *args, **kwargs):
             return Response({}, status=404)
         obj = qs.first()
         if vote_type == "upvote":
-            #obj.rating.add(request.user)
             obj.upvotes.add(request.user)
             obj.downvotes.remove(request.user)
-            serializer = PostSerializer(obj)
+            serializer = PostSerializer(obj, context={'req_user': request.user})
             return Response(serializer.data, status=200)
         elif vote_type == "downvote":
             obj.downvotes.add(request.user)
             obj.upvotes.remove(request.user)
-            serializer = PostSerializer(obj)
+            serializer = PostSerializer(obj, context={'req_user': request.user})
             return Response(serializer.data, status=200)
         elif vote_type == "delupvote":
             obj.upvotes.remove(request.user)
-            serializer = PostSerializer(obj)
+            serializer = PostSerializer(obj, context={'req_user': request.user})
             return Response(serializer.data, status=200)
         elif vote_type == "deldownvote":
             obj.downvotes.remove(request.user)
-            serializer = PostSerializer(obj)
+            serializer = PostSerializer(obj, context={'req_user': request.user})
             return Response(serializer.data, status=200)
     return Response({}, status=200) 
 
@@ -49,8 +47,8 @@ def post_rate_view(request, *args, **kwargs):
 @api_view(['GET'])
 def api_postview(request, *args, **kwargs):
     qs = Post.objects.all()
-    ser = PostSerializer(qs, many=True)
-    
+    ser = PostSerializer(qs, many=True, context={'req_user': request.user})
+    print(ser.data)
     return Response(ser.data, status=200)
 
 @api_view(['GET'])
@@ -60,5 +58,4 @@ def api_detail_postview(request, id, *args, **kwargs):
         return Response({}, status=404)
     item = qs.first()
     ser = PostSerializer(item)
-
     return Response(ser.data, status=200)

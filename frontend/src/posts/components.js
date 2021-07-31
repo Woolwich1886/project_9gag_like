@@ -1,34 +1,12 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 
-export function ListOfPosts(){
-  var [post_list, set_post_list] = useState([]);
-  useEffect(() => {
-  const xhr = new XMLHttpRequest()
-  xhr.responseType = 'json'
-  xhr.open('GET', 'http://localhost:8000/api/posts')
-  xhr.onload = function() {
-    if (xhr.status === 200) {
-      console.log (xhr.response, xhr.status)
-      set_post_list(xhr.response)
-    }else{
-      console.log('sorry')
-    }
-  }
-  xhr.send()
-  }, [])
-  
-  return post_list.map((item, index)=>{
-    return <FormatPost post={item} key={item.id}/>
-  })
-     
-    
- }
+
 // Функция для стилизации поста
 export function FormatPost(props) {
   const {post} = props
   console.log(post.title)
   return <div className="container my-5 w-50 border border-dark">
-    <header className="h2">{post.title}</header>
+    <header className="h2"></header>
     <div>Категория: {post.category}</div>
     <div className="text-center"><img src={post.image_url} height="60%" width="60%" alt={post.title}></img></div>
       <div>
@@ -43,56 +21,15 @@ export function FormatPost(props) {
   </div>
 }
 
-////функция для рейтинга
-//export function RateBtn (props) {
-//  const {post, action, styleBtn, rateChoice} = props
-//  const data = JSON.stringify({id: post.id, vote_type: action})
-//  var [rate, setRate] = useState(rateChoice)
-// 
-//  
-//  
-//  function RateVal () {
-//    
-//    const xhr = new XMLHttpRequest()
-//    xhr.responseType = 'json'
-//    xhr.open('POST', 'http://localhost:8000/api/post/rate/')
-//    xhr.setRequestHeader("Content-Type", "application/json")
-//   //const csrftoken = getCookie('csrftoken');
-//   // if (csrftoken){
-//   //   // xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
-//   //   xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
-//   //   xhr.setRequestHeader("X-CSRFToken", csrftoken)
-//   // }
-//    xhr.onload = function(ChangeRate) {
-//      if (xhr.status === 200) {
-//        console.log (xhr.response, xhr.status)
-//        console.log(xhr.response.rating)
-//        
-//        setRate(rate+1)    
-//      }else{
-//          console.log('sorry')        
-//      }
-//    }
-//    xhr.send(data)
-//  }
-//  return ( 
-//    <button className={styleBtn} onClick={() => RateVal()}>{rate} {action}</button>
-//  )
-//}
-
-
 
 export function NormBtn(props) {
   const {post} = props
   var [upvotes, setUpvotes] = useState(post.upvotes)
   var [downvotes, setDownvotes] = useState(post.downvotes)
   var [rate, setRate] = useState(post.rating)
-  var [didclickUp, setDidclickUp] = useState(false)
-  var[ didclickDown, setDidclickDown] = useState(false)
-  useEffect (() => {
-    setDidclickDown(didclickDown)
-    setDidclickUp(didclickUp)
-  }, [didclickUp, didclickDown])
+  var [didclickUp, setDidclickUp] = useState(post.vote === "UP" ? true : false)
+  var [didclickDown, setDidclickDown] = useState(post.vote === "DOWN" ? true : false)
+  
   
   var BtnUpStyle = didclickUp === false ? "btn btn-outline-primary" : "btn btn-primary"
   var BtnDownStyle = didclickDown === false ? "btn btn-outline-danger" : "btn btn-danger"
@@ -177,13 +114,6 @@ export function NormBtn(props) {
   )
 }
 
-
-//function UpvoteAlready(props) {
-//  const {post, data} = props
-//
-//
-//}
-//
 
 
 //function getCookie(name) {

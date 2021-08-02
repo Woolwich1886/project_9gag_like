@@ -20,13 +20,14 @@ class PostRateSerializer(serializers.Serializer):
     
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
-    text = serializers.StringRelatedField()
+  #  post = serializers.IntegerField()
     class Meta:
         model = Comment
         fields = [
             'user',
             'comment_date',
-            'text'
+            'text',
+            'post'
         ]
 
 

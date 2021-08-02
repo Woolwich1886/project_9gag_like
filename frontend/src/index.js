@@ -16,12 +16,12 @@ import { DetailPost } from './posts/detail';
 
  
 
-  ReactDOM.render(
-    <React.StrictMode>
-    <App />
-    </React.StrictMode>,
-    document.getElementById('root') //корневой узел ДОМ
-  )
+  //ReactDOM.render(
+  //  <React.StrictMode>
+  //  <App />
+  //  </React.StrictMode>,
+  //  document.getElementById('root') //корневой узел ДОМ
+  //)
 
   ReactDOM.render(
     <React.StrictMode>

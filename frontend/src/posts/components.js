@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 
 
 // Функция для стилизации поста
@@ -24,32 +24,54 @@ export function FormatPost(props) {
       <div>Комментарии: {post.comments_quantity}</div>
     </footer>
     <div>
-    {detail === true  
-    ? <CommentSection comments = {post.comments}/>
-    : ''
-    }
+    {post.comments 
+    ? <CommentSection comments = {post.comments} />
+//      ? console.log(detail, post.comments)
+
+    : console.log(detail, 'not detail')
+  }
     </div>
   </div>
 }
 export function CommentSection(props) {
   const {comments} = props
-  //[comms, setComms] = useState([])
-  //useEffect(() => {
-  //
-  //}, [])
-  return <>{ comments.map((item) => {
-    return <div>
-      <div>{item.user}</div>
-      <div>{item.text}</div>
-      <div>{item.comment_date}</div>
-      <div>{item.id}</div>
+  var [cmnts, setCmnts] = useState([comments])
+  useEffect (() => {
+    setCmnts(comments)
+  },[comments])
+  return <React.Fragment>
+    <div class="form-floating">
+      <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2"></textarea>
+      <label for="floatingTextarea2">Ваш комментарий</label>
     </div>
-  })}</>
-  
+    <div><button className="btn btn-success">Отправить</button></div>
+    <div>
+  { cmnts.map((item) => {
+    return <CommentDesign ccc = {item} key={item.id} />
+  })}</div>
+  </React.Fragment>
 }
-
-
-
+//  const {comments} = props
+//  //[comms, setComms] = useState([comments])
+//  //useEffect(() => {
+//  //
+//  //}, [])
+//  return <React.Fragment>{comments.map((item) => {
+//    return <CommentDesign comments={item} key={item.id} />
+//  })}</React.Fragment>
+//  
+//}
+//
+//
+export function CommentDesign(props) {
+  const {ccc} = props
+  return <div>
+      
+      <div>{ccc.user}</div>
+      <div>{ccc.text}</div>
+      <div>{ccc.comment_date}</div>
+    </div>
+}
 
 
 export function NormBtn(props) {

@@ -1,3 +1,4 @@
+from rest_framework import serializers
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -6,6 +7,27 @@ from rest_framework.pagination import PageNumberPagination # пагинация
 
 from ..serializers import CommentSerializer, PostRateSerializer, PostSerializer
 from ..models import Comment, Post
+#{"user": "adm", "post": 2, "text": "proverka"}
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def send_comment(request, *args, **kwargs):
+    serializer = CommentSerializer(data=request.data)
+    print(request.data)
+    if serializer.is_valid(raise_exception=True):
+        data = serializer.validated_data
+        post_id = data.get("post")
+        text = data.get("text")
+        user = request.user
+        qs = Post.objects.filter(id=post_id.id)
+        
+        obj = qs.first()
+        print(obj,user, text)
+        c = Comment(post=obj, user=user, text=text)
+        print(c)
+        c.save()
+        serializer = PostSerializer(obj, context={'req_user': request.user})
+        return Response(serializer.data, status=201)
 
 
 @api_view(['POST'])
@@ -66,4 +88,5 @@ def api_detail_postview(request, id, *args, **kwargs):
     item = qs.first()
     ser = PostSerializer(item, context={'req_user': request.user})
     print(request.user)
+    print(ser.data,)
     return Response(ser.data, status=200)

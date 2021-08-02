@@ -1,25 +1,55 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 
 // Функция для стилизации поста
 export function FormatPost(props) {
-  const {post} = props
+  
+  const {post, detail} = props
+  function DetailLink() {
+    window.location.href = `/${post.id}`
+  }
   console.log(post.title)
   return <div className="container my-5 w-50 border border-dark">
-    <header className="h2"></header>
+    {detail === false  
+    ? <header className="h2" onClick={DetailLink}>{post.title}</header>
+    : <header className="h2">{post.title}</header>
+    }
     <div>Категория: {post.category}</div>
     <div className="text-center"><img src={post.image_url} height="60%" width="60%" alt={post.title}></img></div>
-      <div>
-{/*        <RateBtn styleBtn="btn btn-primary" rateChoice={post.upvotes} post={post} action='upvote'/>
-        <RateBtn styleBtn="btn btn-danger" rateChoice={post.downvotes} post={post} action='downvote'/> */}
         <NormBtn post={post}/>
-      </div>
+    <div>{detail === true ? <div>asdasd</div> : ''}</div>
     <footer>
-    <div>Автор: {post.author}</div>
-    <div>Дата публикации: {post.pub_date}</div>
+      <div>Автор: {post.author}</div>
+      <div>Дата публикации: {post.pub_date}</div>
+      <div>Комментарии: {post.comments_quantity}</div>
     </footer>
+    <div>
+    {detail === true  
+    ? <CommentSection comments = {post.comments}/>
+    : ''
+    }
+    </div>
   </div>
 }
+export function CommentSection(props) {
+  const {comments} = props
+  //[comms, setComms] = useState([])
+  //useEffect(() => {
+  //
+  //}, [])
+  return <>{ comments.map((item) => {
+    return <div>
+      <div>{item.user}</div>
+      <div>{item.text}</div>
+      <div>{item.comment_date}</div>
+      <div>{item.id}</div>
+    </div>
+  })}</>
+  
+}
+
+
+
 
 
 export function NormBtn(props) {
@@ -104,13 +134,13 @@ export function NormBtn(props) {
     xhr.send(data)
   }
   }
-  return (<div>
-    <div></div>{rate}
+  return (<React.Fragment>
+    {rate}
     <button className={BtnUpStyle} onClick={() => 
       didclickUp === false ? RateVal('upvote') : RateVal('delupvote') }>{upvotes} Апвоут</button>
     <button className={BtnDownStyle} onClick={() => 
       didclickDown === false ? RateVal('downvote') : RateVal('deldownvote') }>{downvotes} Даунвоут</button>
-    </div>
+    </React.Fragment>
   )
 }
 

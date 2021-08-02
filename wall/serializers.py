@@ -1,6 +1,6 @@
 from django.db.models import fields
 from rest_framework import serializers
-from .models import Category, Post
+from .models import Category, Comment, Post
 from django.conf import settings
 
 
@@ -18,6 +18,17 @@ class PostRateSerializer(serializers.Serializer):
             raise serializers.ValidationError("Такого варианта действий нет, либо авпоут, либо даунвоут")
         return value
     
+class CommentSerializer(serializers.ModelSerializer):
+    user = serializers.StringRelatedField()
+    text = serializers.StringRelatedField()
+    class Meta:
+        model = Comment
+        fields = [
+            'user',
+            'comment_date',
+            'text'
+        ]
+
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,6 +46,14 @@ class PostSerializer(serializers.ModelSerializer):
     upvotes = serializers.SerializerMethodField('get_upvotes')
     downvotes = serializers.SerializerMethodField('get_downvotes')
     vote = serializers.SerializerMethodField('get_vote')
+    comments_quantity = serializers.SerializerMethodField('get_comments_quantity')
+    comments = serializers.SerializerMethodField('get_comments')
+    
+
+    def get_comments(self, obj):
+        cms = obj.comments.all()
+        cms_ser = CommentSerializer(cms, many=True)
+        return cms_ser.data
 
 
     def get_vote(self, obj):
@@ -44,7 +63,8 @@ class PostSerializer(serializers.ModelSerializer):
             return 'DOWN'
         return 'NO VOTE'
 
-    
+    def get_comments_quantity(self, obj):
+        return obj.comments.count()
 
     def get_image_url(self, obj):
         return ('http://localhost:8000' + obj.image.url)
@@ -70,5 +90,7 @@ class PostSerializer(serializers.ModelSerializer):
         'upvotes',
         'downvotes',
         'vote',
+        'comments_quantity',
+        'comments'
            ]
     

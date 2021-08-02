@@ -1,7 +1,6 @@
 from django.db import models
 from django.conf import settings
-from django.db.models.enums import Choices
-from django.db.models.fields.related import OneToOneField
+
 
 User = settings.AUTH_USER_MODEL
 # Create your models here.
@@ -17,8 +16,9 @@ class Category(models.Model):
         verbose_name_plural = 'Категории'
         verbose_name = 'Категория'
         ordering = ['name']
-
-
+class COmmentManager(models.Manager):
+    def get_queryset(self):
+        return Comment.get_queryset().filter('post.id')
 
 class Post(models.Model):
     title = models.CharField(max_length=100, verbose_name='Название поста')
@@ -28,6 +28,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, related_name='my_posts', on_delete=models.CASCADE, verbose_name='Автор поста')
     upvotes = models.ManyToManyField(User, related_name='user_upvotes', blank=True, through='Upvote')
     downvotes = models.ManyToManyField(User, related_name='user_downvotes', blank=True, through='Downvote')
+    #comments = models.ManyToManyField('Comment', related_name='user_comments', blank=True, through='Comment')
 
 
     def __str__(self):
@@ -58,4 +59,16 @@ class Downvote(models.Model):
     down_update = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.post
+        return ('Пользователь: '+ self.user.username + ', пост: ' + self.post.title)
+
+
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='comments')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    comment_date = models.DateTimeField(auto_now_add=True)
+    text = models.CharField(max_length=200, verbose_name='текст комментария')
+
+    #def __str__(self):
+     #   return ('Пользователь: '+ self.user.username + ', пост: ' + self.post.title + ', текст комментария: ' + self.text)

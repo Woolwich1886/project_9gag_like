@@ -1,9 +1,11 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination # пагинация
 
-from ..serializers import PostRateSerializer, PostSerializer
-from ..models import Post
+
+from ..serializers import CommentSerializer, PostRateSerializer, PostSerializer
+from ..models import Comment, Post
 
 
 @api_view(['POST'])
@@ -46,16 +48,22 @@ def post_rate_view(request, *args, **kwargs):
 
 @api_view(['GET'])
 def api_postview(request, *args, **kwargs):
+    paginator = PageNumberPagination()
+    paginator.page_size = 1
     qs = Post.objects.all()
-    ser = PostSerializer(qs, many=True, context={'req_user': request.user})
-    print(ser.data)
-    return Response(ser.data, status=200)
+    qs_pages = paginator.paginate_queryset(qs, request)
+    ser = PostSerializer(qs_pages, many=True, context={'req_user': request.user})
+    #print(ser.data)
+    return paginator.get_paginated_response(ser.data)
+    #return Response(ser.data, status=200)
 
 @api_view(['GET'])
+@permission_classes([IsAuthenticated])
 def api_detail_postview(request, id, *args, **kwargs):
     qs = Post.objects.filter(id=id)
     if not qs.exists():
         return Response({}, status=404)
     item = qs.first()
-    ser = PostSerializer(item)
+    ser = PostSerializer(item, context={'req_user': request.user})
+    print(request.user)
     return Response(ser.data, status=200)

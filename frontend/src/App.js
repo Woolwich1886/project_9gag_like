@@ -5,11 +5,13 @@ import React from 'react';
 import {ListOfPosts} from './posts'
 
 
+
 function App() {
   
   return (
     <div className="App">
       <ListOfPosts />
+      
     </div>)
   //);
 //}

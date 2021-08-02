@@ -8,7 +8,6 @@ export function BeData(method, url, callback, data) {
   }
   const xhr = new XMLHttpRequest()
   xhr.responseType = 'json'
-  
   xhr.open(method, url)
   xhr.setRequestHeader("Content-Type", "application/json")
   xhr.onload = function() {
@@ -27,18 +26,37 @@ export function BeData(method, url, callback, data) {
 
 
 export function ListOfPosts() {
-  var [post_list, set_post_list] = useState([])
+  var [postList, setPostList] = useState([])
+  var [nextUrl, setNextUrl] = useState(null)
   useEffect(() => {
     function WallList(response, status) {
-      set_post_list(response)
+      setNextUrl(response.next)
+      setPostList(response.results)
     }
     BeData('GET', 'http://localhost:8000/api/posts', WallList)
   }, [])
-  return post_list.map((item)=>{
-    return <FormatPost post={item} key={item.id}/>
-})
+  function NewPartOfPosts() {
+    if (nextUrl !== null) {
+      function PartOfPosts(response, status) {
+        if (status === 200) {
+        setNextUrl(response.next)
+        const newPosts = [...postList].concat(response.results)
+        setPostList(newPosts)}
+        else{
+          alert("Ошибка при загрузке")
+        }
+      }
+    
+      BeData("GET", nextUrl, PartOfPosts)
+    }
 
-}
+    }
+    return <React.Fragment>{ postList.map((item)=>{
+      return <FormatPost post={item} detail={false} key={item.id}/>
+  })}
+  {nextUrl !== null && <button className="btn btn-primary" onClick={NewPartOfPosts}>Загрузить еще</button>}</React.Fragment>}
+  
+  
 
 //
 //

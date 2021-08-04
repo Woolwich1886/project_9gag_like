@@ -10,14 +10,7 @@ from rest_framework.response import Response
 
 
 def detail_postview(request, id, *args, **kwargs):
-    post_list = Post.objects.filter(id=id)
-    if post_list:
-        post = post_list.first()
-    else:
-        raise Http404('not exists')
-    return render(request, 'pages/home.html', {'post_list': post})
+    return render(request, 'pages/detail.html')
 
 def postview(request, *args, **kwargs):
-    posts = Post.objects.all()
-    post_list=posts
     return render(request, 'pages/home.html')

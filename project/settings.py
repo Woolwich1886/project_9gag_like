@@ -138,7 +138,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static-root")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # мои настройки
-#AUTH_USER_MODEL = 'profiles.SocialUser' 
 LOGOUT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 CORS_ORIGIN_WHITELIST = ['http://localhost:3000']

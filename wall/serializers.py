@@ -1,7 +1,8 @@
-from django.db.models import fields
 from rest_framework import serializers
 from .models import Category, Comment, Post
 from django.conf import settings
+from django.utils.timezone import utc
+import datetime
 
 
 POST_RATE_OPTIONS = settings.POST_RATE_OPTIONS
@@ -20,6 +21,18 @@ class PostRateSerializer(serializers.Serializer):
     
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
+   # comment_date = serializers.DateTimeField(format='%d %B %Y %H:%m')
+    comment_date = serializers.SerializerMethodField('get_date')
+
+    def get_date(self, obj):
+        if (datetime.datetime.utcnow().replace(tzinfo=utc).day -
+        obj.comment_date.day == 1):
+            return 'Вчера в '+(obj.comment_date.strftime('%H:%M'))
+        elif (datetime.datetime.utcnow().replace(tzinfo=utc).day -
+        obj.comment_date.day == 0):
+            return 'Сегодня в '+(obj.comment_date.strftime('%H:%M'))
+        else:
+            return obj.comment_date.strftime("%d %B %Y %H:%M")
   #  post = serializers.IntegerField()
     class Meta:
         model = Comment
@@ -41,6 +54,7 @@ class PostSerializer(serializers.ModelSerializer):
     #image = serializers.ImageField(max_length=False, use_url=True)
     image_url = serializers.SerializerMethodField('get_image_url')
     # = serializers.RelatedField(read_only=True)
+
     category = serializers.StringRelatedField()
     author = serializers.StringRelatedField()
     rating = serializers.SerializerMethodField('get_rating')
@@ -49,7 +63,20 @@ class PostSerializer(serializers.ModelSerializer):
     vote = serializers.SerializerMethodField('get_vote')
     comments_quantity = serializers.SerializerMethodField('get_comments_quantity')
     comments = serializers.SerializerMethodField('get_comments')
+    pub_date = serializers.SerializerMethodField('get_date')
     
+    
+    def get_date(self, obj):
+        if (datetime.datetime.utcnow().replace(tzinfo=utc).day -
+        obj.pub_date.day == 1):
+            return 'Вчера'+(obj.pub_date.strftime('%H:%M'))
+        elif (datetime.datetime.utcnow().replace(tzinfo=utc).day -
+        obj.pub_date.day == 0):
+            return 'Вчера'+(obj.pub_date.strftime('%H:%M'))
+        else:
+            return obj.pub_date.strftime('%d %B %Y %H:%M')
+
+
 
     def get_comments(self, obj):
         cms = obj.comments.all()

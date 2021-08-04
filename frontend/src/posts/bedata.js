@@ -11,11 +11,10 @@ export function BeData(method, url, callback, data) {
   xhr.open(method, url)
   xhr.setRequestHeader("Content-Type", "application/json")
   xhr.onload = function() {
-    if (xhr.status === 200) {
-      console.log(xhr.response, xhr.status)
+    if (xhr.status === 200 || xhr.status === 201) {
       callback(xhr.response, xhr.status)
     } else {
-      console.log('some error')
+      console.log('some error', xhr.status, xhr.response)
     }
   }
   xhr.onerror = function (e) {
@@ -28,6 +27,7 @@ export function BeData(method, url, callback, data) {
 export function ListOfPosts() {
   var [postList, setPostList] = useState([])
   var [nextUrl, setNextUrl] = useState(null)
+  console.log(postList)
   useEffect(() => {
     function WallList(response, status) {
       setNextUrl(response.next)
@@ -52,7 +52,7 @@ export function ListOfPosts() {
 
     }
     return <React.Fragment>{ postList.map((item)=>{
-      return <FormatPost post={item} detail={false} key={item.id}/>
+      return <FormatPost post={item} detail = {false} key={item.id}/>
   })}
   {nextUrl !== null && <button className="btn btn-primary" onClick={NewPartOfPosts}>Загрузить еще</button>}</React.Fragment>}
   

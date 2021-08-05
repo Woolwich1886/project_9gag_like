@@ -21,7 +21,6 @@ class PostRateSerializer(serializers.Serializer):
     
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
-   # comment_date = serializers.DateTimeField(format='%d %B %Y %H:%m')
     comment_date = serializers.SerializerMethodField('get_date')
 
     def get_date(self, obj):
@@ -33,7 +32,7 @@ class CommentSerializer(serializers.ModelSerializer):
             return 'Сегодня в '+(obj.comment_date.strftime('%H:%M'))
         else:
             return obj.comment_date.strftime("%d %B %Y %H:%M")
-  #  post = serializers.IntegerField()
+
     class Meta:
         model = Comment
         fields = [
@@ -69,19 +68,27 @@ class PostSerializer(serializers.ModelSerializer):
     def get_date(self, obj):
         if (datetime.datetime.utcnow().replace(tzinfo=utc).day -
         obj.pub_date.day == 1):
-            return 'Вчера'+(obj.pub_date.strftime('%H:%M'))
+            return 'Вчера в '+(obj.pub_date.strftime('%H:%M'))
         elif (datetime.datetime.utcnow().replace(tzinfo=utc).day -
         obj.pub_date.day == 0):
-            return 'Вчера'+(obj.pub_date.strftime('%H:%M'))
+            return 'Сегодня в '+(obj.pub_date.strftime('%H:%M'))
         else:
             return obj.pub_date.strftime('%d %B %Y %H:%M')
 
 
-
     def get_comments(self, obj):
-        cms = obj.comments.all()
-        cms_ser = CommentSerializer(cms, many=True)
-        return cms_ser.data
+        if self.context.get('sort_type'):
+            if self.context.get('sort_type') == 'old':
+                cms = obj.comments.order_by('id')
+                cms_ser = CommentSerializer(cms, many=True)
+            elif self.context.get('sort_type') == 'newest':
+                cms = obj.comments.order_by('-id')
+                cms_ser = CommentSerializer(cms, many=True)
+            return cms_ser.data
+        else:
+            cms = obj.comments.order_by('-id')
+            cms_ser = CommentSerializer(cms, many=True)
+            return cms_ser.data
 
 
     def get_vote(self, obj):

@@ -20,13 +20,13 @@ def send_comment(request, *args, **kwargs):
         text = data.get("text")
         user = request.user
         qs = Post.objects.filter(id=post_id.id)
-        
+        print(request.data)
         obj = qs.first()
      #   print(obj,user, text)
         c = Comment(post=obj, user=user, text=text)
        # print(c)
         c.save()
-        serializer = PostSerializer(obj, context={'req_user': request.user})
+        serializer = PostSerializer(obj, context={'req_user': request.user, 'sort_type': request.data.get('sortType')})
         return Response(serializer.data, status=201)
 
 
@@ -50,20 +50,20 @@ def post_rate_view(request, *args, **kwargs):
         if vote_type == "upvote":
             obj.upvotes.add(request.user)
             obj.downvotes.remove(request.user)
-            serializer = PostSerializer(obj, context={'req_user': request.user})
+            serializer = PostSerializer(obj, context={'req_user': request.user, 'sort_type': request.data.get('sortType')})
             return Response(serializer.data, status=200)
         elif vote_type == "downvote":
             obj.downvotes.add(request.user)
             obj.upvotes.remove(request.user)
-            serializer = PostSerializer(obj, context={'req_user': request.user})
+            serializer = PostSerializer(obj, context={'req_user': request.user, 'sort_type': request.data.get('sortType')})
             return Response(serializer.data, status=200)
         elif vote_type == "delupvote":
             obj.upvotes.remove(request.user)
-            serializer = PostSerializer(obj, context={'req_user': request.user})
+            serializer = PostSerializer(obj, context={'req_user': request.user, 'sort_type': request.data.get('sortType')})
             return Response(serializer.data, status=200)
         elif vote_type == "deldownvote":
             obj.downvotes.remove(request.user)
-            serializer = PostSerializer(obj, context={'req_user': request.user})
+            serializer = PostSerializer(obj, context={'req_user': request.user, 'sort_type': request.data.get('sortType')})
             return Response(serializer.data, status=200)
     return Response({}, status=200) 
 
@@ -86,7 +86,25 @@ def api_detail_postview(request, id, *args, **kwargs):
     if not qs.exists():
         return Response({}, status=404)
     item = qs.first()
-    ser = PostSerializer(item, context={'req_user': request.user})
+    
+
+    ser = PostSerializer(item, context={'req_user': request.user, 'sort_type': request.data.get('sortType')})
    # print(request.user)
     #print(ser.data,)
     return Response(ser.data, status=200)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def api_sortview(request, id, *args, **kwargs):
+    serializer = PostRateSerializer(data=request.data)
+    qs = Post.objects.filter(id=id)
+    print('data is =', request.data)
+    if not qs.exists():
+        return Response({}, status=404)
+    item = qs.first()
+    ser = PostSerializer(item, context={'req_user': request.user, 'sort_type': request.data.get('sortType')})
+    return Response(ser.data, status=200)
+   # print(request.user)
+    #print(ser.data,)
+    

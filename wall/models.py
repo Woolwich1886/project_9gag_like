@@ -70,5 +70,6 @@ class Comment(models.Model):
     comment_date = models.DateTimeField(auto_now_add=True)
     text = models.CharField(max_length=200, verbose_name='текст комментария', null=False)
 
-    #def __str__(self):
-     #   return ('Пользователь: '+ self.user.username + ', пост: ' + self.post.title + ', текст комментария: ' + self.text)
+    class Meta:
+        verbose_name_plural = 'Комментарии'
+        verbose_name = 'Комментарий'

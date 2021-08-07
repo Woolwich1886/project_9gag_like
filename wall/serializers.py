@@ -22,6 +22,16 @@ class PostRateSerializer(serializers.Serializer):
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
     comment_date = serializers.SerializerMethodField('get_date')
+    my_comment = serializers.SerializerMethodField('is_my')
+
+
+    def is_my(self, obj):
+        if self.context.get('req_user') == obj.user:
+            return True
+        return False
+
+
+
 
     def get_date(self, obj):
         if (datetime.datetime.utcnow().replace(tzinfo=utc).day -
@@ -36,10 +46,12 @@ class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = [
+            'id',
             'user',
             'comment_date',
             'text',
-            'post'
+            'post',
+            'my_comment'
         ]
 
 
@@ -77,18 +89,7 @@ class PostSerializer(serializers.ModelSerializer):
 
 
     def get_comments(self, obj):
-        if self.context.get('sort_type'):
-            if self.context.get('sort_type') == 'old':
-                cms = obj.comments.order_by('id')
-                cms_ser = CommentSerializer(cms, many=True)
-            elif self.context.get('sort_type') == 'newest':
-                cms = obj.comments.order_by('-id')
-                cms_ser = CommentSerializer(cms, many=True)
-            return cms_ser.data
-        else:
-            cms = obj.comments.order_by('-id')
-            cms_ser = CommentSerializer(cms, many=True)
-            return cms_ser.data
+        return self.context.get('comments')
 
 
     def get_vote(self, obj):

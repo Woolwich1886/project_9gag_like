@@ -20,12 +20,12 @@ from django.contrib import admin
 from django.urls import path, include
 
 
-
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('wall.urls')), # урлы приложения wall
-    path('', include('wall.api.urls'))
+    path('', include('wall.api.urls')), # урлы api wall
+    path('', include('account.urls')), # урлы account
+    path('', include('account.api.urls')),# урлы api account
 ]
 
 if settings.DEBUG:

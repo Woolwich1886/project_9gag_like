@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import { SendComment } from './comment'
-
 // Функция для стилизации поста
 export function FormatPost(props) {
   const {post, detail} = props
   function DetailLink() {
-    window.location.href = `/${post.id}`
+    window.location.href = `/${post.id}/`
   }
   
   console.log(post)
@@ -36,16 +35,6 @@ export function FormatPost(props) {
 }
 
 
-
-
-
-
-
-
-
-
-
-
 //Кнопки для голосов
 export function NormBtn(props) {
   const {post} = props
@@ -54,12 +43,8 @@ export function NormBtn(props) {
   var [rate, setRate] = useState(post.rating)
   var [didclickUp, setDidclickUp] = useState(post.vote === "UP" ? true : false)
   var [didclickDown, setDidclickDown] = useState(post.vote === "DOWN" ? true : false)
-  
-  
   var BtnUpStyle = didclickUp === false ? "btn btn-outline-primary" : "btn btn-primary"
   var BtnDownStyle = didclickDown === false ? "btn btn-outline-danger" : "btn btn-danger"
-  
-  
   function RateVal (action) {
     const data = JSON.stringify({id: post.id, vote_type: action})
     const xhr = new XMLHttpRequest()
@@ -138,21 +123,3 @@ export function NormBtn(props) {
     </React.Fragment>
   )
 }
-
-
-
-//function getCookie(name) {
-//  var cookieValue = null;
-//  if (document.cookie && document.cookie !== '') {
-//      var cookies = document.cookie.split(';');
-//      for (var i = 0; i < cookies.length; i++) {
-//          var cookie = cookies[i].trim();
-//          // Does this cookie string begin with the name we want?
-//          if (cookie.substring(0, name.length + 1) === (name + '=')) {
-//              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-//              break;
-//          }
-//      }
-//  }
-//  return cookieValue;
-//}

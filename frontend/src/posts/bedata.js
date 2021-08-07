@@ -10,6 +10,8 @@ export function BeData(method, url, callback, data) {
   xhr.responseType = 'json'
   xhr.open(method, url)
   xhr.setRequestHeader("Content-Type", "application/json")
+  
+  
   xhr.onload = function() {
     if (xhr.status === 200 || xhr.status === 201) {
       callback(xhr.response, xhr.status)
@@ -24,7 +26,8 @@ export function BeData(method, url, callback, data) {
 }
 
 
-export function ListOfPosts() {
+export function ListOfPosts(props) {
+  const {username} = props
   var [postList, setPostList] = useState([])
   var [nextUrl, setNextUrl] = useState(null)
   console.log(postList)
@@ -33,8 +36,9 @@ export function ListOfPosts() {
       setNextUrl(response.next)
       setPostList(response.results)
     }
-    BeData('GET', 'http://localhost:8000/api/posts', WallList)
-  }, [])
+    username ? BeData('GET', `http://localhost:8000/api/posts/?username=${username}`, WallList)
+    : BeData('GET', 'http://localhost:8000/api/posts', WallList)
+  }, [username])
   function NewPartOfPosts() {
     if (nextUrl !== null) {
       function PartOfPosts(response, status) {

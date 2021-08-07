@@ -9,8 +9,8 @@ from rest_framework.response import Response
 # Create your views here.
 
 
-def detail_postview(request, id, *args, **kwargs):
-    return render(request, 'pages/detail.html')
+def detail_postview(request, postid, *args, **kwargs):
+    return render(request, 'pages/detail.html', context={'postid': postid})
 
 def postview(request, *args, **kwargs):
     return render(request, 'pages/home.html')

@@ -3,18 +3,18 @@ import { BeData } from "./bedata";
 import {FormatPost} from "./components";
 
 
-export function DetailPost() {
+export function DetailPost(props) {
+    const {postid} = props
+    console.log(postid)
     var [postList, setPostList] = useState([])
     var [postIsLoad, setPostIsLoad] = useState(false)
-    const path = window.location.pathname
-    console.log(path)  
   useEffect(() => {
     function WallList(response, status) {
       setPostList(response)
       setPostIsLoad(true)
     }
-    BeData('GET', `http://localhost:8000/api/posts${path}`, WallList)
-  }, [path])   
+    BeData('GET', `http://localhost:8000/api/posts/${postid}`, WallList)
+  }, [postid])   
     return  <React.Fragment>{postIsLoad ?
     <>
     <ScrollToTop />

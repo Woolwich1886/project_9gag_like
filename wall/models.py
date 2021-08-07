@@ -16,9 +16,7 @@ class Category(models.Model):
         verbose_name_plural = 'Категории'
         verbose_name = 'Категория'
         ordering = ['name']
-class COmmentManager(models.Manager):
-    def get_queryset(self):
-        return Comment.get_queryset().filter('post.id')
+
 
 class Post(models.Model):
     title = models.CharField(max_length=100, verbose_name='Название поста')

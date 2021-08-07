@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { BeData } from "./bedata"
+
+
 export function SendComment(props) {
   const {post} = props
   const [commentText, setCommentText] = useState("");
   const [sortType, setSortType] = useState('newest')
-
   var data = {}
   var [comments, setCmnts] = useState([post.comments])
   //console.log('sortType is', sortType)
@@ -12,13 +13,12 @@ export function SendComment(props) {
     setCmnts(post.comments)
     console.log('on hook ', sortType)
   },[setCmnts, post.comments, sortType])
+  
   function callback (response, status) {
     if (status===201 || status===200) {
-      //console.log(status)
       setCmnts(response.comments)
     }
-    else {
-      //console.log(status)
+    else { console.log(status, "Ошибка")
     }
   }
   function handleSubmit (evt) {
@@ -37,26 +37,34 @@ export function SendComment(props) {
     console.log('btn value is ',event.target.value)
     console.log('sortType is ', sortType)
     BeData("POST", `http://localhost:8000/api/posts/${post.id}/sort`, callback, {sortType: event.target.value})
-
-    
-    
   }
 
+
+  function handleDeleteComment(event) {   
+    console.log(event.target.value)
+    alert("точно удалить?")
+    BeData("DELETE", `http://localhost:8000/api/posts/${post.id}/${event.target.value}`, callback, {sortType: sortType})
+  }
 
   return (<React.Fragment>
       <div className="btn-group" role="group" aria-label="Basic radio toggle button group">
         <input type="radio" className="btn-check" name="btnradio" id="btnradio1" value='newest' onChange={handleSort} checked={sortType==='newest'}></input>
         <label className="btn btn-outline-primary" for="btnradio1">Сначала новые</label>
-
         <input type="radio" className="btn-check" name="btnradio" id="btnradio2" value='old' onChange={handleSort} checked={sortType==='old'}></input>
         <label className="btn btn-outline-primary" for="btnradio2">Сначала старые</label>
-        
       </div>
      <div>
      { comments.map((item) => {
-       return <CommentDesign ccc = {item} key={item.id} />})}</div>
+       return <React.Fragment key={item.id}>
+       <div>{item.user}</div>
+      <div>{item.text}</div>
+      <div>{item.comment_date}</div>
+      {item.my_comment
+      ? <button className="btn btn-danger" value={item.id} onClick={handleDeleteComment}>удалить</button>
+      : null}
+      </React.Fragment>})}
+       </div>
        <form onSubmit={handleSubmit}>
-       
        <textarea
         className="form-control"    
         resize="none"
@@ -69,21 +77,5 @@ export function SendComment(props) {
         maxLength='100'
         ></textarea>
      <button type='submit' className="btn btn-success" >Отправить</button>
-     </form></React.Fragment>)
-  
+     </form></React.Fragment>)  
 }
-
-
-
-
-export function CommentDesign(props) {
-  const {ccc} = props
-  return <div>
-      
-      <div>{ccc.user}</div>
-      <div>{ccc.text}</div>
-      <div>{ccc.comment_date}</div>
-    </div>
-}
-
-

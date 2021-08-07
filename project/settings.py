@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'rest_framework',
     #мои приложения
     'wall',
+    'account',
 ]
 
 MIDDLEWARE = [

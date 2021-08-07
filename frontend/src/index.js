@@ -4,21 +4,46 @@ import './index.css';
 import App from './App';
 
 import reportWebVitals from './reportWebVitals';
+import { DetailPost } from './posts';
+import { ProfileView } from './profiles';
 
 
 //const element = <Welcome name="Алиса" />;
 //Когда React встречает подобный элемент, 
 //он собирает все JSX-атрибуты и дочерние элементы в один объект 
 //и передаёт их нашему компоненту. Этот объект называется «пропсы» (props).
+const wallElement = document.getElementById('root')
+if (wallElement) {
+  ReactDOM.render(<App />, wallElement)
+}
 
- 
-
+const e = React.createElement
+const postElement = document.getElementById('detail')
+if (postElement) {
   ReactDOM.render(
-    <React.StrictMode>
-    <App />
-    </React.StrictMode>,
-    document.getElementById('root') //корневой узел ДОМ
+    e(DetailPost, postElement.dataset), postElement
   )
+}
+
+const profileElement = document.getElementById('profile')
+if (profileElement) {
+  ReactDOM.render(
+    e(ProfileView, profileElement.dataset), profileElement
+  )
+}
+
+
+
+
+
+
+//  ReactDOM.render(
+//    <React.StrictMode>
+//    <App />
+//    </React.StrictMode>,
+//    document.getElementById('root') //корневой узел ДОМ
+//  )
+
 
 
 // If you want to start measuring performance in your app, pass a function

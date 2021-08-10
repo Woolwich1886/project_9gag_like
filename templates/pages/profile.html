@@ -3,19 +3,5 @@
 {% block title %}Мой профиль {% endblock title %}
 
 {% block content %}
-<div>привет, {{username}}</div>
-<div class = "col-10 col-md-4 mx-auto">
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class='btn btn-secondary'>
-            Изменить
-        </button>
-    </form>
-    </div>
-<script>
-
-
-
-</script>
+<div id="profile" data-username="{{username}}"></div>
 {% endblock content %}

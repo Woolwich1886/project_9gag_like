@@ -13,4 +13,8 @@ def detail_postview(request, postid, *args, **kwargs):
     return render(request, 'pages/detail.html', context={'postid': postid})
 
 def postview(request, *args, **kwargs):
-    return render(request, 'pages/home.html')
+    return render(request, 'pages/category.html')
+
+def categoryview(request, category, *args, **kwargs):
+    return render(request, 'pages/category.html', context={'category': category})
+

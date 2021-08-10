@@ -1,14 +1,10 @@
 from django import urls
 from django.urls import path
 
-
-
-
-
 from .views import profile_view
 
 urlpatterns = [
-    path('profile/<str:username>', profile_view),
+    path('profile/<str:username>/', profile_view),
     
 ]
 

@@ -10,6 +10,31 @@ from ..serializers import CommentSerializer, PostRateSerializer, PostSerializer
 from ..models import Comment, Post
 
 
+# удаление поста
+@api_view(['DELETE', 'POST'])
+@permission_classes([IsAuthenticated])
+def delete_post(request, post_id, *args, **kwargs):
+    paginator = PageNumberPagination()
+    paginator.page_size = 2
+    print(args, kwargs)
+    qs = Post.objects.filter(id=post_id)
+    print(Post.objects.filter(id=post_id))
+    if not qs.exists():
+        return Response({}, status=404)
+    user = qs.filter(user=request.user)
+    if not qs.exists():
+        return Response({"message":"Вам не позволено удалять этот комментарий"}, status=401)
+    post = qs.first()
+    post.delete()
+    #qs_pages = paginator.paginate_queryset(qs, request)
+    #ser = PostSerializer(qs_pages, many=True, context={'req_user': request.user})
+    #print(ser.data)
+   # return paginator.get_paginated_response(ser.data)
+    return Response({"message":"Пост успешно удален"}, status=200)
+
+
+
+
 # удаление коммента
 @api_view(['DELETE', 'POST'])
 @permission_classes([IsAuthenticated])
@@ -26,7 +51,6 @@ def delete_comment(request, post_id, com_id, *args, **kwargs):
     com = qs.first()
     com.delete()
     item=Post.objects.filter(id=post_id).first()
-    
     item_com = get_comments(item ,request.data.get('sortType'), request.user)
     ser = PostSerializer(item, context={'req_user': request.user, 'comments': item_com})
     return Response (ser.data, status=200)
@@ -97,11 +121,14 @@ def post_rate_view(request, *args, **kwargs):
 @api_view(['GET'])
 def api_postview(request, *args, **kwargs):
     paginator = PageNumberPagination()
-    paginator.page_size = 1
+    paginator.page_size = 2
     qs = Post.objects.all()
     username = request.GET.get('username') # ?username = профиль
     if username !=None:
-        qs=qs.filter(author__username=username)
+        qs=qs.filter(user__username=username)
+    category = request.GET.get('category') # ?category = по категории
+    if category !=None:
+        qs=qs.filter(category__name=category)
     qs_pages = paginator.paginate_queryset(qs, request)
     ser = PostSerializer(qs_pages, many=True, context={'req_user': request.user})
     #print(ser.data)

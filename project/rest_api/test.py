@@ -8,5 +8,5 @@ User = get_user_model()
 class TestAuthentication(authentication.BasicAuthentication):
     def authenticate(self, request):
         qs = User.objects.all()
-        user = User.objects.get(id=2)
+        user = User.objects.get(id=1)
         return (user, None)

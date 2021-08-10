@@ -23,7 +23,7 @@ class Post(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория', null=False)
     image = models.ImageField(verbose_name='Изображение', upload_to='')
     pub_date = models.DateTimeField(auto_now_add=True, verbose_name='Дата публикации')
-    author = models.ForeignKey(User, related_name='my_posts', on_delete=models.CASCADE, verbose_name='Автор поста')
+    user = models.ForeignKey(User, related_name='my_posts', on_delete=models.CASCADE, verbose_name='Автор поста')
     upvotes = models.ManyToManyField(User, related_name='user_upvotes', blank=True, through='Upvote')
     downvotes = models.ManyToManyField(User, related_name='user_downvotes', blank=True, through='Downvote')
     #comments = models.ManyToManyField('Comment', related_name='user_comments', blank=True, through='Comment')

@@ -18,9 +18,9 @@ class DownvoteAdmin(TabularInline):
 
 class PostAdmin(admin.ModelAdmin):
     inlines = [UpvoteAdmin, DownvoteAdmin, CommentAdmin]
-    list_display = ('title', 'category', 'pub_date', 'author')
-    search_fields = ('title', 'author')
-    list_filter = ('title', 'author', 'pub_date')
+    list_display = ('title', 'category', 'pub_date', 'user')
+    search_fields = ('title', 'user')
+    list_filter = ('title', 'user', 'pub_date')
 
 
 admin.site.register(Post, PostAdmin)

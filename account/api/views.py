@@ -30,7 +30,7 @@ def api_profile_view(request, username, *args, **kwargs):
 def api_postview_by_user(request, username, *args, **kwargs):
     paginator = PageNumberPagination()
     paginator.page_size = 1
-    qs = Post.objects.filter(author__username=username)
+    qs = Post.objects.filter(user__username=username)
     qs_pages = paginator.paginate_queryset(qs, request)
     ser = PostSerializer(qs_pages, many=True, context={'req_user': request.user})
     #print(ser.data)

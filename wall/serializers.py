@@ -1,3 +1,4 @@
+from account.models import Account, User
 from rest_framework import serializers
 from .models import Category, Comment, Post
 from django.conf import settings
@@ -21,16 +22,19 @@ class PostRateSerializer(serializers.Serializer):
     
 class CommentSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
+    author = serializers.SerializerMethodField('get_author')
     comment_date = serializers.SerializerMethodField('get_date')
     my_comment = serializers.SerializerMethodField('is_my')
 
+    def get_author(self, obj):
+        fname = Account.objects.filter(user_id=obj.user.id).first().first_name
+        sname = Account.objects.filter(user_id=obj.user.id).first().second_name
+        return fname + ' ' + sname
 
     def is_my(self, obj):
         if self.context.get('req_user') == obj.user:
             return True
         return False
-
-
 
 
     def get_date(self, obj):
@@ -51,7 +55,8 @@ class CommentSerializer(serializers.ModelSerializer):
             'comment_date',
             'text',
             'post',
-            'my_comment'
+            'my_comment',
+            'author'
         ]
 
 
@@ -67,7 +72,8 @@ class PostSerializer(serializers.ModelSerializer):
     # = serializers.RelatedField(read_only=True)
 
     category = serializers.StringRelatedField()
-    author = serializers.StringRelatedField()
+    user = serializers.StringRelatedField()
+    author = serializers.SerializerMethodField('get_author')
     rating = serializers.SerializerMethodField('get_rating')
     upvotes = serializers.SerializerMethodField('get_upvotes')
     downvotes = serializers.SerializerMethodField('get_downvotes')
@@ -75,8 +81,22 @@ class PostSerializer(serializers.ModelSerializer):
     comments_quantity = serializers.SerializerMethodField('get_comments_quantity')
     comments = serializers.SerializerMethodField('get_comments')
     pub_date = serializers.SerializerMethodField('get_date')
+    my_post = serializers.SerializerMethodField('is_my')
     
+
+
+
+    def is_my(self, obj):
+        if self.context.get('req_user') == obj.user:
+            return True
+        return False
+
     
+    def get_author(self, obj):
+        fname = Account.objects.filter(user_id=obj.user.id).first().first_name
+        sname = Account.objects.filter(user_id=obj.user.id).first().second_name
+        return fname + ' ' + sname
+
     def get_date(self, obj):
         if (datetime.datetime.utcnow().replace(tzinfo=utc).day -
         obj.pub_date.day == 1):
@@ -127,6 +147,8 @@ class PostSerializer(serializers.ModelSerializer):
         'downvotes',
         'vote',
         'comments_quantity',
-        'comments'
+        'comments',
+        'my_post',
+        'user'
            ]
     

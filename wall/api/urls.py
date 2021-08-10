@@ -7,6 +7,7 @@ from .views import (api_postview,
                     send_comment, 
                     api_sortview,
                     delete_comment,
+                    delete_post,
                     )
 
 
@@ -20,6 +21,7 @@ urlpatterns = [
     path('api/posts/send_comment', send_comment),
     path('api/posts/<int:id>/sort', api_sortview), 
     path('api/posts/<int:post_id>/<int:com_id>', delete_comment),
+    path('api/posts/<int:post_id>/delete/', delete_post)
 
 ]
 if settings.DEBUG:

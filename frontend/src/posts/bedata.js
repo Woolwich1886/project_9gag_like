@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import { ScrollToTop } from './btns';
 import {FormatPost} from './components';
 
 export function BeData(method, url, callback, data) {
@@ -10,8 +11,6 @@ export function BeData(method, url, callback, data) {
   xhr.responseType = 'json'
   xhr.open(method, url)
   xhr.setRequestHeader("Content-Type", "application/json")
-  
-  
   xhr.onload = function() {
     if (xhr.status === 200 || xhr.status === 201) {
       callback(xhr.response, xhr.status)
@@ -27,7 +26,7 @@ export function BeData(method, url, callback, data) {
 
 
 export function ListOfPosts(props) {
-  const {username} = props
+  const {username, category} = props
   var [postList, setPostList] = useState([])
   var [nextUrl, setNextUrl] = useState(null)
   console.log(postList)
@@ -36,9 +35,14 @@ export function ListOfPosts(props) {
       setNextUrl(response.next)
       setPostList(response.results)
     }
-    username ? BeData('GET', `http://localhost:8000/api/posts/?username=${username}`, WallList)
-    : BeData('GET', 'http://localhost:8000/api/posts', WallList)
-  }, [username])
+    if (username) {
+      BeData('GET', `http://localhost:8000/api/posts/?username=${username}`, WallList)
+    } else if (category) {
+      BeData('GET', `http://localhost:8000/api/posts/?category=${category}`, WallList)
+    } else {
+      BeData('GET', 'http://localhost:8000/api/posts', WallList)
+    }
+  }, [username, category])
   function NewPartOfPosts() {
     if (nextUrl !== null) {
       function PartOfPosts(response, status) {
@@ -58,37 +62,7 @@ export function ListOfPosts(props) {
     return <React.Fragment>{ postList.map((item)=>{
       return <FormatPost post={item} detail = {false} key={item.id}/>
   })}
-  {nextUrl !== null && <button className="btn btn-primary" onClick={NewPartOfPosts}>Загрузить еще</button>}</React.Fragment>}
-  
+  {nextUrl !== null && <button className="btn btn-primary" onClick={NewPartOfPosts}>Загрузить еще</button>}
+  <ScrollToTop /></React.Fragment>}
   
 
-//
-//
-//
-//import React, {useEffect, useState} from 'react'
-//import {FormatPost} from './components';
-//export function ListOfPosts(props){
-//  const {url} = props
-//  var [post_list, set_post_list] = useState([]);
-//  useEffect(() => {
-//  const xhr = new XMLHttpRequest()
-//  xhr.responseType = 'json'
-//  xhr.open('GET', url)
-//  xhr.onload = function() {
-//    if (xhr.status === 200) {
-//      console.log (xhr.response, xhr.status)
-//      set_post_list(xhr.response)
-//    }else{
-//      console.log('sorry')
-//    }
-//  }
-//  xhr.send()
-//  }, [url])
-//  
-//  return post_list.map((item, index)=>{
-//    return <FormatPost post={item} key={item.id}/>
-//  })
-//     
-//    
-// }
-//

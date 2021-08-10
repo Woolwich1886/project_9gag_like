@@ -4,8 +4,9 @@ import './index.css';
 import App from './App';
 
 import reportWebVitals from './reportWebVitals';
-import { DetailPost } from './posts';
+import { DetailPost, Menubar } from './posts';
 import { ProfileView } from './profiles';
+
 
 
 //const element = <Welcome name="Алиса" />;
@@ -31,6 +32,14 @@ if (profileElement) {
     e(ProfileView, profileElement.dataset), profileElement
   )
 }
+
+const categoryElement = document.getElementById('category')
+if (categoryElement) {
+  ReactDOM.render(
+    e(Menubar, categoryElement.dataset), categoryElement
+  )
+}
+
 
 
 

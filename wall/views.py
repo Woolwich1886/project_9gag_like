@@ -1,9 +1,10 @@
 from re import template
+from wall.forms import PostForm
 from django.http import response, JsonResponse
 from django.http.response import Http404, HttpResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .serializers import PostSerializer
-from .models import Post
+from .models import Category, Post
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 # Create your views here.
@@ -17,6 +18,25 @@ def postview(request, *args, **kwargs):
 
 def categoryview(request, category, *args, **kwargs):
     return render(request, 'pages/category.html', context={'category': category})
+
+def createview(request, *args, **kwargs):
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            form = PostForm(request.POST or None, request.FILES or None)
+            if form.is_valid():
+                post = form.save(commit=False)
+                post.user = request.user
+                post.save()
+                return redirect('/')
+        else:
+            form = PostForm()
+                
+    context = {
+        'form': form,
+        'title': 'Создать пост',
+        'btn_text': 'Опубликовать'
+    }
+    return render(request, 'pages/create.html', context)
 
 def testview(request):
     print(request.user)

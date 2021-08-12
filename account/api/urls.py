@@ -3,6 +3,7 @@ from django.urls.resolvers import URLPattern
 
 from .views import (api_profile_view, 
                     api_postview_by_user,
+                    api_profile_imageview, 
                     )
 
 
@@ -12,6 +13,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('api/profile/<str:username>/', api_profile_view),
     path('api/profile/<str:username>/', api_postview_by_user),
+    path('api/profile/<str:username>/badge/', api_profile_imageview)
 ]
 if settings.DEBUG:
 

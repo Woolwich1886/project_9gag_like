@@ -9,7 +9,12 @@ export function BeData(method, url, callback, data) {
   }
   const xhr = new XMLHttpRequest()
   xhr.responseType = 'json'
+  const csrftoken = getCookie('csrftoken');
   xhr.open(method, url)
+  if (csrftoken){
+    //xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+    xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+    xhr.setRequestHeader("X-CSRFToken", csrftoken)}
   xhr.setRequestHeader("Content-Type", "application/json")
   xhr.onload = function() {
     if (xhr.status === 200 || xhr.status === 201) {
@@ -22,6 +27,23 @@ export function BeData(method, url, callback, data) {
     callback({"message": "Error"}, 400)
   }
   xhr.send(jsonData)
+}
+
+
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+          }
+      }
+  }
+  return cookieValue;
 }
 
 

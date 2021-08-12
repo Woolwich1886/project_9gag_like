@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { BeData } from './bedata'
-import { DelBtn } from './btns'
+import { DelPostBtn } from './btns'
 import { SendComment } from './comment'
 // Функция для стилизации поста
 export function FormatPost(props) {
@@ -26,7 +26,7 @@ export function FormatPost(props) {
     ? console.log('post is', post.id)
   :null}
     {post.my_post 
-      ? <DelBtn postId={post.id} />
+      ? <DelPostBtn postId={post.id} />
       : null}
       </header>
     <div>Категория: {post.category}</div>
@@ -51,6 +51,29 @@ export function FormatPost(props) {
   </React.Fragment>
 }
 
+
+
+
+
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+          }
+      }
+  }
+  return cookieValue;
+}
+
+
+
+
 //Кнопки для голосов
 export function NormBtn(props) {
   const {post} = props
@@ -67,12 +90,12 @@ export function NormBtn(props) {
     xhr.responseType = 'json'
     xhr.open('POST', 'http://localhost:8000/api/post/rate/')
     xhr.setRequestHeader("Content-Type", "application/json")
-   //const csrftoken = getCookie('csrftoken');
-   // if (csrftoken){
-   //   // xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
-   //   xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
-   //   xhr.setRequestHeader("X-CSRFToken", csrftoken)
-   // }
+   const csrftoken = getCookie('csrftoken');
+    if (csrftoken){
+      //xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+      xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+      xhr.setRequestHeader("X-CSRFToken", csrftoken)
+    }
     if (action === 'upvote') {
     xhr.onload = function(ChangeRate) {
       if (xhr.status === 200) {

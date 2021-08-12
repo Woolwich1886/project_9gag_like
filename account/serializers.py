@@ -19,6 +19,15 @@ class AccountSerializer(serializers.ModelSerializer):
             'about'
         ]
 
+class AccountBadgeSerializer(serializers.ModelSerializer):
+    badge_url = serializers.SerializerMethodField('get_image_url')
+    def get_image_url(self, obj):
+        return ('http://localhost:8000' + obj.prof_image.url)
+    class Meta:
+        model = Account
+        fields=[
+            'badge_url',
+        ]
 #
 #
 #POST_RATE_OPTIONS = settings.POST_RATE_OPTIONS

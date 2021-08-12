@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { ListOfPosts } from "./bedata"
-import { ScrollToTop } from "./btns";
 import './wall.css';
 export function Menubar(props) {
     const {category} = props

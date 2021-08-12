@@ -20,7 +20,7 @@ urlpatterns = [
     path('api/post/rate/', post_rate_view),
     path('api/posts/send_comment', send_comment),
     path('api/posts/<int:id>/sort', api_sortview), 
-    path('api/posts/<int:post_id>/<int:com_id>', delete_comment),
+    path('api/comments/<int:com_id>/delete/', delete_comment),
     path('api/posts/<int:post_id>/delete/', delete_post)
 
 ]

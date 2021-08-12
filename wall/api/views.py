@@ -1,10 +1,8 @@
-from decimal import Context
-from rest_framework import serializers
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, authentication_classes, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.authentication import SessionAuthentication
 from rest_framework.pagination import PageNumberPagination # пагинация
-
 
 from ..serializers import CommentSerializer, PostRateSerializer, PostSerializer
 from ..models import Comment, Post
@@ -26,10 +24,6 @@ def delete_post(request, post_id, *args, **kwargs):
         return Response({"message":"Вам не позволено удалять этот комментарий"}, status=401)
     post = qs.first()
     post.delete()
-    #qs_pages = paginator.paginate_queryset(qs, request)
-    #ser = PostSerializer(qs_pages, many=True, context={'req_user': request.user})
-    #print(ser.data)
-   # return paginator.get_paginated_response(ser.data)
     return Response({"message":"Пост успешно удален"}, status=200)
 
 
@@ -38,11 +32,10 @@ def delete_post(request, post_id, *args, **kwargs):
 # удаление коммента
 @api_view(['DELETE', 'POST'])
 @permission_classes([IsAuthenticated])
-def delete_comment(request, post_id, com_id, *args, **kwargs):
+def delete_comment(request, com_id, *args, **kwargs):
     print(args, kwargs)
     qs = Comment.objects.filter(id=com_id)
     print(Comment.objects.filter(id=com_id))
-    print('kek')
     if not qs.exists():
         return Response({}, status=404)
     user = qs.filter(user=request.user)
@@ -50,10 +43,7 @@ def delete_comment(request, post_id, com_id, *args, **kwargs):
         return Response({"message":"Вам не позволено удалять этот комментарий"}, status=401)
     com = qs.first()
     com.delete()
-    item=Post.objects.filter(id=post_id).first()
-    item_com = get_comments(item ,request.data.get('sortType'), request.user)
-    ser = PostSerializer(item, context={'req_user': request.user, 'comments': item_com})
-    return Response (ser.data, status=200)
+    return Response ({"message":"Комментарий успешно удален"}, status=200)
 
 
 # отправка коммента
@@ -137,9 +127,12 @@ def api_postview(request, *args, **kwargs):
 
 
 # каждый пост отдельно
+
 @api_view(['GET'])
+@authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def api_detail_postview(request, id, *args, **kwargs):
+    print(request.data)
     qs = Post.objects.filter(id=id)
     if not qs.exists():
         return Response({}, status=404)

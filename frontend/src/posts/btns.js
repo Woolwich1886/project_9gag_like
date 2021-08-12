@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"
 import { BeData } from "./bedata"
-export function DelBtn (props) {
+export function DelPostBtn (props) {
     const {postId} = props
     const [isDel, setIsDel] = useState(false)
 
@@ -66,4 +66,30 @@ export function ScrollToTop() {
 }
 
 
-  
+export function DelCommBtn(props){
+  const{comId} = props
+  const [isDel, setIsDel] = useState(false)
+
+    function handleDeleteComment(event) {
+        event.preventDefault()
+        function callback(response, status){
+            console.log(response, status)
+        }
+        if (window.confirm("Вы действительно хотите удалить комментарий?")) {
+            setIsDel(true); BeData("DELETE", `http://localhost:8000/api/comments/${event.target.value}/delete/`, callback)}
+
+        //BeData("DELETE", `http://localhost:8000/api/posts/${event.target.value}/delete/`, callback)
+    }
+    return <div>
+        
+    {isDel === false 
+        ? <div> 
+        <button type="button" id="btn" value={comId} onClick={handleDeleteComment} className="btn btn-danger btn-sm"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16">
+                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+            </svg>
+            Удалить
+        </button>
+        </div>
+            : <div>Комментарий удален</div>}
+        </div>
+        }

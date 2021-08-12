@@ -13,8 +13,13 @@ def detail_postview(request, postid, *args, **kwargs):
     return render(request, 'pages/detail.html', context={'postid': postid})
 
 def postview(request, *args, **kwargs):
-    return render(request, 'pages/category.html')
+    return render(request, 'pages/home.html')
 
 def categoryview(request, category, *args, **kwargs):
     return render(request, 'pages/category.html', context={'category': category})
+
+def testview(request):
+    print(request.user)
+    print(request.user.is_authenticated)
+    return render(request, 'pages/test.html')
 

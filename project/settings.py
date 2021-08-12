@@ -141,15 +141,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # мои настройки
 LOGOUT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
+#CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
 REST_FRAMEWORK = {
     
     'DEFAULT_PERMISSION_CLASES': [
-        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+        #'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        'rest_framework.permissions.IsAuthenticated'
     ]
 }
 
 CORS_ORIGIN_ALLOW_ALL = True
+CORS_URLS_REGEX = r'^/api/.*$'
 MEDIA_ROOT = os.path.join(BASE_DIR, "images")
 MEDIA_URL = 'images/'
 POST_RATE_OPTIONS = ['upvote', 'downvote']
@@ -157,6 +159,8 @@ DEFAULT_RENDERER_CLASSES = [
         'rest_framework.renderers.JSONRenderer',
     ]
 DEFAULT_AUTHENTICATION_CLASSES =[
+    #'rest_framework.authentication.BasicAuthentication'
+    #'rest_framework.authentication.TokenAuthentication',
     'rest_framework.authentication.SessionAuthentication'
 ]
 # убрать после завершения проекта!!
@@ -164,9 +168,9 @@ if DEBUG:
    DEFAULT_RENDERER_CLASSES += [
        'rest_framework.renderers.BrowsableAPIRenderer',
    ]
-   DEFAULT_AUTHENTICATION_CLASSES += [
-       'project.rest_api.test.TestAuthentication'
-   ]
+ #  DEFAULT_AUTHENTICATION_CLASSES += [
+ #      'project.rest_api.test.TestAuthentication'
+ #  ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': DEFAULT_AUTHENTICATION_CLASSES,
     'DEFAULT_RENDERER_CLASSES': DEFAULT_RENDERER_CLASSES

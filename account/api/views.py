@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination # пагинация
 
-from ..serializers import AccountSerializer
+from ..serializers import AccountSerializer, AccountBadgeSerializer
 from ..models import Account
 from wall.models import Post
 from wall.serializers import PostSerializer
@@ -37,6 +37,15 @@ def api_postview_by_user(request, username, *args, **kwargs):
     return paginator.get_paginated_response(ser.data)
     #return Response(ser.data, status=200)
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def api_profile_imageview(request, username, *args, **kwargs):
+    print(username)
+    qs = Account.objects.filter(user__username=username)
+    item = qs.first()
+    ser = AccountBadgeSerializer(item)
+    print(ser.data)
+    return Response(ser.data, status=200)
 
 ##from ..serializers import CommentSerializer, PostRateSerializer, PostSerializer
 ##from ..models import Comment, Post

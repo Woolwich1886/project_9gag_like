@@ -24,7 +24,7 @@ export function FormatPost(props) {
     </div>
     {post.my_post
     ? console.log('post is', post.id)
-  :null}
+    :null}
     {post.my_post 
       ? <DelPostBtn postId={post.id} />
       : null}

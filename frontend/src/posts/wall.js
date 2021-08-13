@@ -1,12 +1,11 @@
-import { useState } from "react"
-import { ListOfPosts } from "./bedata"
+import React, { useState, useEffect } from "react"
 import './wall.css';
-export function Menubar(props) {
-    const {category} = props
-    const [catType, setCatType] = useState(category)
-    console.log('props is ',props)
+export function Menubar() {
+    const path = window.location.pathname.substring(1)
+    const [catType, setCatType] = useState(path)
     console.log('catType is ', catType)
-
+    
+    console.log('path is', path)
     function handleSort(event){
         event.preventDefault()
         console.log(event.target.value)
@@ -16,13 +15,13 @@ export function Menubar(props) {
         window.location.href=`/${event.target.value}`
     }
 
-    return <div className="container-fluid" style={{height:"-webkit-fill-available"}}>
-        <div className="row" style={{height:"-webkit-fill-available"}}>
-        <div className="col-2 bg-dark border border-dark-2">
-        <div class="btn-group-vertical col-12" style={{position:'sticky', top: 10}} role="group" aria-label="Basic radio toggle button group">
+    return <React.Fragment>
+        <div className="sticky-top sticky-offset">
+        <hr class="m-3 border-3 border-top border-info"></hr>
+        <div class="btn-group-vertical col-12" role="group" aria-label="Basic radio toggle button group">
             
 
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" value='' onChange={handleSort} checked={catType===''}></input>
+            <input type="radio" class="btn-check active" name="btnradio" id="btnradio1" value='' onChange={handleSort} checked={catType===''}></input>
             <label class="btn btn-outline-info text-start" for="btnradio1"><svg xmlns="http://www.w3.org/2000/svg" width="35%" height="16" fill="currentColor" class="bi bi-list-ul" viewBox="20 0 16 16">
             <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm-3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 4a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
             </svg>Главная</label>
@@ -43,15 +42,44 @@ export function Menubar(props) {
             </svg>Спорт</label>
             
             </div>
-                    <div class="align-items-start">
-                    </div>
-                    </div>
-                    <div className="col-10" style={{backgroundColor: "lightgray"}}>
-                    <ListOfPosts category={catType} className="overflow-auto"/>
-                    </div>
-                </div>
-                </div>
+            <hr class="m-3 border-3 border-top border-info"></hr>
+            <ScrollToTop />
+            </div>
+            </React.Fragment>
+                
                 
                 }
-                
+
+function ScrollToTop() {
+  const [isVisible, setIsVisible] = useState(false);
+  // Show button when page is scorlled upto given distance
+  function toggleVisibility() {
+    if (window.pageYOffset > 300) {
+      setIsVisible(true);
+    } else {
+      setIsVisible(false);
+    }
+  };
+  // Set the top cordinate to 0
+  // make scrolling smooth
+  function scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", toggleVisibility);
+  }, []);
+  return (
+    <div className="bi bi-arrow-up-square-fill" style={{position: 'sticky'}}>
+      {isVisible && 
+        <button className="col-12 btn btn-outline-info"onClick={scrollToTop}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" className="bi bi-arrow-up-square-fill" viewBox="0 -2 20 20">
+        <path d="M2 16a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2zm6.5-4.5V5.707l2.146 2.147a.5.5 0 0 0 .708-.708l-3-3a.5.5 0 0 0-.708 0l-3 3a.5.5 0 1 0 .708.708L7.5 5.707V11.5a.5.5 0 0 0 1 0z"/>
+      </svg>
+           Наверх</button>}
+    </div>
+  );
+}
                 

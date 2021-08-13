@@ -84,7 +84,6 @@ export function ListOfPosts(props) {
     return <React.Fragment>{ postList.map((item)=>{
       return <FormatPost post={item} detail = {false} key={item.id}/>
   })}
-  {nextUrl !== null && <button className="btn btn-primary" onClick={NewPartOfPosts}>Загрузить еще</button>}
-  <ScrollToTop /></React.Fragment>}
+  {nextUrl !== null && <div className="text-center"><button className="btn btn-success" onClick={NewPartOfPosts}>Загрузить еще</button></div>}</React.Fragment>}
   
 

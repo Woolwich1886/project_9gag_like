@@ -4,6 +4,10 @@ from .models import Post, Category
 
 
 class PostForm(forms.ModelForm):
+    title = forms.CharField(max_length=100, widget=forms.TextInput(attrs={
+                                                            'class': 'form-control',
+                                                            'placeholder': 'Введите название'                                                   
+    }), label='Название')
     class Meta:
         model = Post
         fields = ('title', 'category', 'image')
@@ -14,9 +18,7 @@ class PostForm(forms.ModelForm):
             raise forms.ValidationError("Слишком длинное название, попробуйте короче")
         return title
 
-#class PostForm(forms.ModelForm):
-#    title = forms.CharField(label='Название поста')
-#    category = forms.ModelChoiceField(queryset=Category.objects.all(), label='Категория')
+
 
 
 

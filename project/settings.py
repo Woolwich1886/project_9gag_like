@@ -168,9 +168,9 @@ if DEBUG:
    DEFAULT_RENDERER_CLASSES += [
        'rest_framework.renderers.BrowsableAPIRenderer',
    ]
- #  DEFAULT_AUTHENTICATION_CLASSES += [
- #      'project.rest_api.test.TestAuthentication'
- #  ]
+   DEFAULT_AUTHENTICATION_CLASSES += [
+       'project.rest_api.test.TestAuthentication'
+   ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': DEFAULT_AUTHENTICATION_CLASSES,
     'DEFAULT_RENDERER_CLASSES': DEFAULT_RENDERER_CLASSES

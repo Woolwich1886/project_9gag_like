@@ -4,7 +4,7 @@ import './index.css';
 import App from './App';
 
 import reportWebVitals from './reportWebVitals';
-import { DetailPost, Menubar } from './posts';
+import { DetailPost, ListOfPosts, Menubar } from './posts';
 import { ProfileView } from './profiles';
 
 
@@ -19,6 +19,15 @@ if (wallElement) {
 }
 
 const e = React.createElement
+const listElement = document.getElementById('list')
+if (listElement) {
+  ReactDOM.render(
+    e(ListOfPosts, listElement.dataset), listElement
+  )
+}
+
+
+
 const postElement = document.getElementById('detail')
 if (postElement) {
   ReactDOM.render(

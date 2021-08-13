@@ -24,7 +24,6 @@ export function DetailPost(props) {
 }
 
 
-
 function BackBtn () {
   window.history.back()
 }

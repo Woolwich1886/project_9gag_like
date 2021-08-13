@@ -16,10 +16,19 @@ export function ProfileView(props){
         }
         BeData("GET", `http://localhost:8000/api/profile/${username}`, ProfileLoad)
     }, [username])
+
+
+    function handleCreate(event){
+        event.preventDefault()
+        window.location.href='/posts/create'
+    }
+
+
     return <React.Fragment>{
         isload
         ?<>
-        <div className="container-sm my-5 w-50 border border-dark border-2">
+        
+        <div className="container-sm my-5 bg-white col-6 border border-dark rounded-3 border-2">
         
         <div className="row p-3">
             <div className="col-sm-4"><img style={{borderRadius: '50%'}} src={profData.badge_url} height="100%" width="100%" alt={profData.second_name}></img></div>
@@ -29,8 +38,10 @@ export function ProfileView(props){
             <div className=" row">{profData.about}</div>
         </div>
         </div>
-        
         </div>
+            <div className="text-center">
+                <button className="btn btn-success btn-lg" onClick={handleCreate}>+ Добавить пост</button>
+            </div>
         <div>
         <ListOfPosts username={username} /></div>
         </>

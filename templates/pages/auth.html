@@ -4,7 +4,7 @@
 
 {% block content %}
 
-<div class = "container overflow-auto p-2 position-relative bg-info" style="border-radius: 10%; width: 325px; margin-top: 5%;">
+<div class = "container overflow-auto p-2 position-relative bg-white border border-info border-4 rounded-3" style="width: 325px; margin-top: 5%;">
 <h2 class = "text-center">{{ title }}</h2>
 <form method="POST">
     {% csrf_token %}
@@ -22,7 +22,7 @@
         {{ btn_text }}
     </button>
 </form>
-<div class="text-center bg-info">
+<div class="text-center">
     {% for error in form.username.errors  %}
     <p >{{error}}</p>
     {% endfor %}
@@ -40,7 +40,7 @@
     {% endfor %}
 </div>
 
-<div class="text-center bg-info">
+<div class="text-center">
     {% if  title == 'Авторизация'  %}  
     <p>Еще не зарегистрированы?
     <br>Пройдите <a href='{% url 'registration' %}'>регистрацию</a></p>

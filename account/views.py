@@ -8,10 +8,39 @@ from django.contrib.auth import authenticate,login, logout, get_user_model
 # Create your views here.
 
 from .models import Account
-from .forms import LoginForm, RegistrationForm
+from .forms import EditProfileForm, LoginForm, RegistrationForm
 
 
 User=get_user_model()
+
+
+def edit_profile_view(request, username, *args, **kwargs):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    qs = Account.objects.filter(user__username=username)
+    if not qs.exists():
+        raise Http404
+    item = qs.first()
+    print(request.user)
+    print(item.user)
+    if request.user == item.user:
+        if request.method == 'POST':
+            print('asdasd')
+            form = EditProfileForm(request.POST or None, request.FILES or None, instance=item)
+            if form.is_valid():
+                form.save()
+   #             account = form.save(commit=False)
+   #             account.user = request.user
+   #             account.save()
+                return redirect (request.path_info)
+        else:
+            form = EditProfileForm(instance=item)
+    else:
+        return redirect('/')
+    context = {'username': username,
+               'account': item,
+               'form': form}
+    return render (request, 'pages/edit_profile.html', context)
 
 
 def profile_view(request, username, *args, **kwargs):

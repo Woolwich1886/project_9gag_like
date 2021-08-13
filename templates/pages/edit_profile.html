@@ -3,6 +3,15 @@
 {% block title %}Мой профиль {% endblock title %}
 
 {% block content %}
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{form.as_p}}
+
+
+<button type="submit" class='btn btn-success my-5 position-relative top-50 start-50 translate-middle'>
+    Редактировать
+</button>
+</form>
 <div class="container-sm my-5 bg-white col-6 border border-dark rounded-3 border-2" id="account">
     <div class="row p-3"">
         <div class="col-4"><img src="{{account.prof_image.url}}" height="100%" width="100%" alt="{{account.first_name}}"</img></div>
@@ -12,5 +21,5 @@
         </div>
     </div>
 </div>
-<div id="profile" data-username="{{username}}"></div>
 {% endblock content %}
+

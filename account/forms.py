@@ -1,11 +1,36 @@
+from django.forms import fields
+from .models import Account
 from django import forms
 from django.core import validators
 from django.contrib.auth import REDIRECT_FIELD_NAME, get_user_model
-import re
-
 from django.core.exceptions import ValidationError
 User = get_user_model()
 
+
+
+class EditProfileForm(forms.ModelForm):
+    first_name = forms.CharField(max_length=20 ,widget=forms.TextInput(attrs={
+                                                           'class': 'form-control',
+                                                           'placeholder': 'Введите имя'
+                                                           
+    }), label='Имя', validators=[validators.RegexValidator(
+                                                           regex=r'^[a-zA-Z]+$', 
+                                                           message='В имени цифры недопустимы', 
+                                                           code='invalid_format')])
+    second_name = forms.CharField(max_length=20 ,widget=forms.TextInput(attrs={
+                                                           'class': 'form-control',
+                                                           'placeholder': 'Введите фамилию'
+                                                           
+    }), label='Фамилия', validators=[validators.RegexValidator(
+                                                           regex=r'^[a-zA-Z]+$', 
+                                                           message='В фамилии цифры недопустимы', 
+                                                           code='invalid_format')])
+    prof_image = forms.ImageField(widget=forms.FileInput)
+
+    class Meta:
+        model = Account
+        fields = '__all__'
+        exclude = ['user']
 
 
 class LoginForm(forms.Form):
@@ -25,6 +50,7 @@ class LoginForm(forms.Form):
         if not qs.exists():
             raise forms.ValidationError("Такого логина не существует")
         return username
+
 
 class RegistrationForm(forms.Form):
     username = forms.CharField(max_length=20 ,widget=forms.TextInput(attrs={

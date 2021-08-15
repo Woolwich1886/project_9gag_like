@@ -9,6 +9,7 @@ psycopg2-binary = "*"
 pillow = "*"
 djangorestframework = "*"
 django-cors-headers = "*"
+django-crispy-forms = "*"
 
 [dev-packages]
 

@@ -20,13 +20,12 @@ def edit_profile_view(request, username, *args, **kwargs):
     qs = Account.objects.filter(user__username=username)
     if not qs.exists():
         raise Http404
-    item = qs.first()
+    account = qs.first()
     print(request.user)
-    print(item.user)
-    if request.user == item.user:
+    print(account.user)
+    if request.user == account.user:
         if request.method == 'POST':
-            print('asdasd')
-            form = EditProfileForm(request.POST or None, request.FILES or None, instance=item)
+            form = EditProfileForm(request.POST or None, request.FILES or None, instance=account)
             if form.is_valid():
                 form.save()
    #             account = form.save(commit=False)
@@ -34,11 +33,11 @@ def edit_profile_view(request, username, *args, **kwargs):
    #             account.save()
                 return redirect (request.path_info)
         else:
-            form = EditProfileForm(instance=item)
+            form = EditProfileForm(instance=account)
     else:
         return redirect('/')
     context = {'username': username,
-               'account': item,
+               'account': account,
                'form': form}
     return render (request, 'pages/edit_profile.html', context)
 

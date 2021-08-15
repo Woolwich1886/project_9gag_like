@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #расширения
+    #приложения
+    'crispy_forms',
     'corsheaders',
     'rest_framework',
     #мои приложения
@@ -149,7 +150,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated'
     ]
 }
-
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_URLS_REGEX = r'^/api/.*$'
 MEDIA_ROOT = os.path.join(BASE_DIR, "images")

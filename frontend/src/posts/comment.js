@@ -71,7 +71,7 @@ export function SendComment(props) {
        <textarea
         className="form-control"    
         resize="none"
-        style={{weight: '100%', resize:"none"}}
+        style={{widtht: '100%', resize:"none"}}
         placeholder="Оставьте комментарий здесь" 
         id="floatingTextarea2"
         value={commentText}

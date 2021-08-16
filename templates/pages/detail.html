@@ -3,5 +3,8 @@
 {% block title %}Пост{% endblock title %}
 
 {% block content %}
-<div id="detail" data-postid="{{postid}}"></div>
+<div class ="row" id="basic">
+    <div class="col-2 bg-dark" id="category"></div>
+    <div class="col-10 bg-secondary" id="detail" data-postid='{{postid}}'></div>
+</div>
 {% endblock content %}

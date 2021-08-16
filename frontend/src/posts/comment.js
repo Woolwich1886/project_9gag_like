@@ -31,7 +31,7 @@ export function SendComment(props) {
   }
 
   function handleSort(event) {
-    //event.preventDefault()
+    event.preventDefault()
     setSortType(event.target.value)
     console.log('btn value is ',event.target.value)
     console.log('sortType is ', sortType)
@@ -40,10 +40,10 @@ export function SendComment(props) {
 
   return (<React.Fragment>
       <div className="btn-group" role="group" aria-label="Basic radio toggle button group">
-        <input type="radio" className="btn-check" name="btnradio" id="btnradio1" value='newest' onChange={handleSort} checked={sortType==='newest'}></input>
-        <label className="btn btn-outline-primary btn-sm" for="btnradio1">Сначала новые</label>
-        <input type="radio" className="btn-check" name="btnradio" id="btnradio2" value='old' onChange={handleSort} checked={sortType==='old'}></input>
-        <label className="btn btn-outline-primary btn-sm" for="btnradio2">Сначала старые</label>
+        <input type="radio" className="btn-check" name="btnradio" id="new" value='newest' onChange={handleSort} checked={sortType==='newest'}></input>
+        <label className="btn btn-outline-primary btn-sm" for="new">Сначала новые</label>
+        <input type="radio" className="btn-check" name="btnradio" id="old" value='old' onChange={handleSort} checked={sortType==='old'}></input>
+        <label className="btn btn-outline-primary btn-sm" for="old">Сначала старые</label>
       </div>
      <div>
      { comments.map((item) => {

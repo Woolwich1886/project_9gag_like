@@ -6,6 +6,7 @@ User = settings.AUTH_USER_MODEL
 # Create your models here.
 class Category(models.Model):
     name = models.CharField(max_length=20, verbose_name='Категория')
+    read_name = models.CharField(max_length=20, verbose_name='Читабельное название', blank=True, null=True)
 
 
     def __str__(self):

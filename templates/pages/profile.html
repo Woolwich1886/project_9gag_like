@@ -3,7 +3,14 @@
 {% block title %}Мой профиль {% endblock title %}
 
 {% block content %}
-<div class="container-sm my-5 bg-white col-6 border border-dark rounded-3 border-2" id="account">
+<div class ="row" id="basic">
+    <div class="col-2 bg-dark" id="category"></div>
+    <div class="profile col-10 bg-secondary" id="profile" data-requestuser='{{request.user}}' data-username='{{username}}'></div>
+</div>
+{% endblock content %}
+
+
+<!--<div class="container-sm my-5 bg-white col-6 border border-dark rounded-3 border-2" id="account">
     <div class="row p-3"">
         <div class="col-4"><img src="{{account.prof_image.url}}" height="100%" width="100%" alt="{{account.first_name}}"</img></div>
         <div class="col-8">
@@ -12,5 +19,4 @@
         </div>
     </div>
 </div>
-<div id="profile" data-username="{{username}}"></div>
-{% endblock content %}
+<div id="profile" data-username="{{username}}"></div>-->

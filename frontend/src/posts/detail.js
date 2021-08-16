@@ -17,14 +17,8 @@ export function DetailPost(props) {
   }, [postid])   
     return  <React.Fragment>{postIsLoad ?
     <>
-    <button className="btn btn-primary" onClick={BackBtn}>Назад</button>
     <FormatPost post={postList} detail={true} key={postList.id} /></>
     : null} </React.Fragment>
-}
-
-
-function BackBtn () {
-  window.history.back()
 }
 
 

@@ -75,14 +75,16 @@ export function ListOfPosts(props) {
           alert("Ошибка при загрузке")
         }
       }
-    
       BeData("GET", nextUrl, PartOfPosts)
     }
-
     }
+    if (postList.length === 0) {
+      return <div className="mx-auto my-5 col-6 bg-light border border-dark shadow p-3 rounded position-relative"><h3>Пока что постов нет</h3></div>
+    }
+    else {
     return <React.Fragment>{ postList.map((item)=>{
       return <FormatPost post={item} detail = {false} key={item.id}/>
   })}
-  {nextUrl !== null && <div className="text-center"><button className="btn btn-success" onClick={NewPartOfPosts}>Загрузить еще</button></div>}</React.Fragment>}
+  {nextUrl !== null && <div className="text-center"><button className="btn btn-success" onClick={NewPartOfPosts}>Загрузить еще</button></div>}</React.Fragment>}}
   
 

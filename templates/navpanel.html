@@ -12,12 +12,16 @@
           <li class="nav-item">
             <div class="collapse navbar-collapse" id="navbarNavDarkDropdown">
               <ul class="navbar-nav">
+                <li>
+                  <a class="nav-link active" aria-current="page" href="{% url 'profile' username=request.user %}">Мой профиль</a>
+                </li>
                 <li class="nav-item dropdown">
+                  
                   <a class="nav-link dropdown-toggle" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    {{ request.user }}
+                    <img class=" border border-dark border-2 rounded-circle" height="25px" width="25px" src="{{ request.user.account.prof_image.url }}" alt="profile"></img> {{ request.user.account.first_name }}
                   </a>
                   <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDarkDropdownMenuLink">
-                    <li><a class="dropdown-item" href="profile/{{request.user}}">Редактировать профиль</a></li>
+                    <li><a class="dropdown-item" href="{% url 'edit' username=request.user %}">Редактировать профиль</a></li>
                     <li><a class="dropdown-item" href="{% url 'create' %}">Новый пост</a></li>
                     <li><a class="dropdown-item" href="{% url 'logout' %}">Выход</a></li>
                   </ul>

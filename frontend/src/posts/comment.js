@@ -2,15 +2,15 @@ import React, { useEffect, useState } from "react";
 import { ProfPic } from "../profiles/pic";
 import { BeData } from "./bedata"
 import { DelCommBtn } from "./btns";
+import './wall.css';
 
-
+// детальный вид и комментарии
 export function SendComment(props) {
   const {post} = props
   const [commentText, setCommentText] = useState("");
   const [sortType, setSortType] = useState('newest')
   var data = {}
   var [comments, setCmnts] = useState([post.comments])
-  //console.log('sortType is', sortType)
   useEffect (() => {
     setCmnts(post.comments)
     console.log('on hook ', sortType)
@@ -50,10 +50,10 @@ export function SendComment(props) {
        return <div className="my-2 border border-dark rounded-3 p-2" key={item.id}>
          <div className="row">
         <div className="col-2">
-          {item.user!==undefined ? <ProfPic user={item.user} /> : null}</div>
+          {item.user!==undefined ? <a href={`/profile/${item.author}/`}><ProfPic user={item.user} /></a> : null}</div>
       <div className="col-10">
       <div className="row">
-       <div className="col">{item.author}</div>
+       <div className="col"><h6><a className="link-dark" href={`/profile/${item.author}/`}>{item.author}</a></h6></div>
        <div className="col d-flex align-items-end flex-column">
        {item.my_comment
       ? <DelCommBtn comId={item.id} />

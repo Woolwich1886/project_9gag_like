@@ -129,7 +129,6 @@ def api_postview(request, *args, **kwargs):
 # каждый пост отдельно
 
 @api_view(['GET'])
-@authentication_classes([SessionAuthentication])
 @permission_classes([IsAuthenticated])
 def api_detail_postview(request, id, *args, **kwargs):
     print(request.data)

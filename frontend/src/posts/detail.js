@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import { BeData } from "./bedata";
 import {FormatPost} from "./components";
-import { ScrollToTop } from "./btns";
+
 
 export function DetailPost(props) {
     const {postid} = props
@@ -17,7 +17,6 @@ export function DetailPost(props) {
   }, [postid])   
     return  <React.Fragment>{postIsLoad ?
     <>
-    <ScrollToTop />
     <button className="btn btn-primary" onClick={BackBtn}>Назад</button>
     <FormatPost post={postList} detail={true} key={postList.id} /></>
     : null} </React.Fragment>

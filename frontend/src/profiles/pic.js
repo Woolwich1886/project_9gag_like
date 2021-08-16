@@ -16,7 +16,7 @@ export function ProfPic(props){
     
     
     return <>{user!==undefined
-        ? <div style={{width:100, height:100, borderRadius:"50%"}}><img src={picture} alt={user} height="100%"></img></div>
+        ? <div style={{height: '100px'}}><img style={{borderRadius: '50%'}} src={picture} alt={user} height='75px' widtht="100%"></img></div>
         : <div>b</div>}</>
     
 }

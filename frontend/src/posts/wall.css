@@ -3,3 +3,10 @@
     border-radius: 0;
     border-color: transparent;
 }
+a.link-dark{
+    transition: color 1s ease;
+}
+a.link-dark:hover {
+    color: #5bc0de;
+    transition: color 0.5s ease;
+}

@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react'
-import { ScrollToTop } from './btns';
 import {FormatPost} from './components';
 
 export function BeData(method, url, callback, data) {

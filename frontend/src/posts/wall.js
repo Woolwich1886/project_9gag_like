@@ -4,7 +4,6 @@ export function Menubar() {
     const path = window.location.pathname.substring(1)
     const [catType, setCatType] = useState(path)
     console.log('catType is ', catType)
-    
     console.log('path is', path)
     function handleSort(event){
         event.preventDefault()
@@ -19,7 +18,6 @@ export function Menubar() {
         <div className="sticky-top sticky-offset">
         <hr class="m-3 border-3 border-top border-info"></hr>
         <div class="btn-group-vertical col-12" role="group" aria-label="Basic radio toggle button group">
-            
 
             <input type="radio" class="btn-check active" name="btnradio" id="btnradio1" value='' onChange={handleSort} checked={catType===''}></input>
             <label class="btn btn-outline-info text-start" for="btnradio1"><svg xmlns="http://www.w3.org/2000/svg" width="35%" height="16" fill="currentColor" class="bi bi-list-ul" viewBox="20 0 16 16">
@@ -46,9 +44,8 @@ export function Menubar() {
             <ScrollToTop />
             </div>
             </React.Fragment>
-                
-                
                 }
+
 
 function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);

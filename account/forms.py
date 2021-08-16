@@ -14,19 +14,24 @@ class EditProfileForm(forms.ModelForm):
                                                            'placeholder': 'Введите имя'
                                                            
     }), label='Имя', validators=[validators.RegexValidator(
-                                                           regex=r'^[a-zA-Z]+$', 
+                                                           regex=r'^[a-zA-Zа-яА-Я]+$', 
                                                            message='В имени цифры недопустимы', 
                                                            code='invalid_format')])
     second_name = forms.CharField(max_length=20 ,widget=forms.TextInput(attrs={
                                                            'class': 'form-control',
                                                            'placeholder': 'Введите фамилию'
                                                            
-    }), label='Фамилия', validators=[validators.RegexValidator(
-                                                           regex=r'^[a-zA-Z]+$', 
+    }), label='Фамилия', localize=True, validators=[validators.RegexValidator(
+                                                           regex=r'^[a-zA-Zа-яА-Я]+$', 
                                                            message='В фамилии цифры недопустимы', 
                                                            code='invalid_format')])
-    prof_image = forms.ImageField(widget=forms.FileInput)
-
+    prof_image = forms.ImageField(widget=forms.FileInput(attrs={
+                                                        'style': 'display: none',
+                                                        'class': 'form-control',
+    }), label="Аватар")
+    about = forms.CharField(max_length=200, widget=forms.Textarea(attrs={
+                                                        'style': 'resize: none; height: 200px'
+    }), label='Обо мне', required=False)
     class Meta:
         model = Account
         fields = '__all__'
@@ -70,7 +75,7 @@ class RegistrationForm(forms.Form):
                                                             'placeholder': 'Введите имя'
                                                             
     }), label='Имя', validators=[validators.RegexValidator(
-                                                            regex=r'^[a-zA-Z]+$', 
+                                                            regex=r'^[a-zA-Zа-яА-Я]+$', 
                                                             message='В имени цифры недопустимы', 
                                                             code='invalid_format')])
     second_name = forms.CharField(max_length=20 ,widget=forms.TextInput(attrs={
@@ -78,7 +83,7 @@ class RegistrationForm(forms.Form):
                                                             'placeholder': 'Введите фамилию'
                                                             
     }), label='Фамилия', validators=[validators.RegexValidator(
-                                                            regex=r'^[a-zA-Z]+$', 
+                                                            regex=r'^[a-zA-Zа-яА-Я]+$', 
                                                             message='В фамилии цифры недопустимы', 
                                                             code='invalid_format')])
 

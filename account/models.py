@@ -6,6 +6,7 @@ User = settings.AUTH_USER_MODEL
 
 
 def get_prof_image_path(self, filename):
+    print(str(self.user))
     return 'badge/' + str(self.user) + '/prof_image.png'
 
 

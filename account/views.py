@@ -21,8 +21,8 @@ def edit_profile_view(request, username, *args, **kwargs):
     if not qs.exists():
         raise Http404
     account = qs.first()
-    print(request.user)
-    print(account.user)
+   #print(request.user)
+   #print(account.user)
     if request.user == account.user:
         if request.method == 'POST':
             form = EditProfileForm(request.POST or None, request.FILES or None, instance=account)

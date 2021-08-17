@@ -11,6 +11,8 @@ djangorestframework = "*"
 django-cors-headers = "*"
 django-crispy-forms = "*"
 django-cleanup = "*"
+gunicorn = "*"
+whitenoise = "*"
 
 [dev-packages]
 

@@ -11,8 +11,8 @@ export function FormatPost(props) {
     const cats = {'music': 'Музыка', 'serials': 'Сериалы', 'sport': 'Спорт'}
     return cats[category]}
   return <React.Fragment>
-    <div className=" mx-auto my-5 col-6 bg-light border border-dark shadow p-3 rounded position-relative">
-    <header className="row" style={{position:'relative'}}>
+    <div className=" mx-auto my-5 col-6 bg-light border border-dark shadow p-3 rounded">
+    <header className="row">
       <div className="col position-relative">
     {detail === false
     ? <div><h2><a className="link-dark" href={`/posts/${post.id}/`} style={{textDecoration: 'none'}}target = "_blank" rel = "noopener noreferrer">{post.title}</a></h2></div>

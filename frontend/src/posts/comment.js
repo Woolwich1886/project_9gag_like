@@ -50,10 +50,10 @@ export function SendComment(props) {
        return <div className="my-2 border border-dark rounded-3 p-2" key={item.id}>
          <div className="row">
         <div className="col-2">
-          {item.user!==undefined ? <a href={`/profile/${item.author}/`}><ProfPic user={item.user} /></a> : null}</div>
+          {item.user!==undefined ? <a href={`/profile/${item.user}/`}><ProfPic user={item.user} /></a> : null}</div>
       <div className="col-10">
       <div className="row">
-       <div className="col"><h6><a className="link-dark" href={`/profile/${item.author}/`}>{item.author}</a></h6></div>
+       <div className="col"><h6><a className="link-dark" href={`/profile/${item.user}/`}>{item.author}</a></h6></div>
        <div className="col d-flex align-items-end flex-column">
        {item.my_comment
       ? <DelCommBtn comId={item.id} />

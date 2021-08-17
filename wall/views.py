@@ -1,12 +1,7 @@
-from re import template
 from wall.forms import PostForm
-from django.http import response, JsonResponse
-from django.http.response import Http404, HttpResponse
 from django.shortcuts import redirect, render
-from .serializers import PostSerializer
-from .models import Category, Post
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
+
+
 # Create your views here.
 
 
@@ -37,9 +32,3 @@ def createview(request, *args, **kwargs):
         'btn_text': 'Опубликовать'
     }
     return render(request, 'pages/create.html', context)
-
-def testview(request):
-    print(request.user)
-    print(request.user.is_authenticated)
-    return render(request, 'pages/test.html')
-

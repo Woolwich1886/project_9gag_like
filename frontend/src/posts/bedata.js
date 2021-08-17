@@ -67,6 +67,7 @@ export function ListOfPosts(props) {
       BeData('GET', 'posts', WallList)
     }
   }, [username, category])
+  // Пагинация
   function NewPartOfPosts() {
     if (nextUrl !== null) {
       function PartOfPosts(response, status) {
@@ -78,7 +79,8 @@ export function ListOfPosts(props) {
           alert("Ошибка при загрузке")
         }
       }
-      BeData("GET", nextUrl, PartOfPosts)
+      // nextUrl задается полностью, но для вызова BeData нужна лишь его часть
+      BeData("GET", nextUrl.substring(nextUrl.indexOf('api/') + 4), PartOfPosts)
     }
     }
     if (postList.length === 0) {

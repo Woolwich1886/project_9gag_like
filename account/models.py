@@ -10,10 +10,10 @@ def get_prof_image_path(self, filename):
     return 'badge/' + str(self.user) + '/prof_image.png'
 
 
-
+#Модель Аккаунта (один к одному c моделю Юзер)
 class Account(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     first_name = models.CharField(max_length=20, null=False, blank=False)
     second_name = models.CharField(max_length=20,null=False, blank=False)
-    prof_image = models.ImageField(verbose_name='Аватар', upload_to=get_prof_image_path, default="badge/anon.jpg")
+    prof_image = models.ImageField(verbose_name='Аватар', upload_to=get_prof_image_path, default="badge/anon.png")
     about = models.TextField(max_length=200, null=True, blank=True)

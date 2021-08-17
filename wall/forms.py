@@ -1,8 +1,8 @@
 from django import forms
-from django.forms import widgets
 from .models import Post, Category
 
 
+# Выбор категории при создании поста
 PICK_A_CATEGORY = [
     ('','------'),
     ('music', 'Музыка'),
@@ -11,8 +11,8 @@ PICK_A_CATEGORY = [
 ]
 
 
+# Форма для создания поста
 class PostForm(forms.ModelForm):
-
     title = forms.CharField(max_length=100, widget=forms.TextInput(attrs={
                                                             'class': 'form-control',
                                                             'placeholder': 'Введите название'                                                   

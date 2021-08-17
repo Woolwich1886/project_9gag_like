@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react'
 import {FormatPost} from './components';
 
+
+// функция для "общения" с бэкендом
 export function BeData(method, url, callback, data) {
   var jsonData
   if (data) {
@@ -12,7 +14,6 @@ export function BeData(method, url, callback, data) {
   //xhr.open(method, `http://localhost:8000/api/${url}`)
   xhr.open(method, `https://social-soc1.herokuapp.com/api/${url}`)
   if (csrftoken){
-    //xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
     xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
     xhr.setRequestHeader("X-CSRFToken", csrftoken)}
   xhr.setRequestHeader("Content-Type", "application/json")
@@ -29,7 +30,7 @@ export function BeData(method, url, callback, data) {
   xhr.send(jsonData)
 }
 
-
+// функция с сайта джанго для куки
 function getCookie(name) {
   let cookieValue = null;
   if (document.cookie && document.cookie !== '') {
@@ -47,6 +48,7 @@ function getCookie(name) {
 }
 
 
+//Функция отображения постов
 export function ListOfPosts(props) {
   const {username, category} = props
   var [postList, setPostList] = useState([])

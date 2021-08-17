@@ -4,18 +4,20 @@ from django.contrib.admin.options import TabularInline
 from .models import Category, Comment, Post, Upvote, Downvote
 # Register your models here.
 
+
+#Модель Комментариев в админке
 class CommentAdmin(TabularInline):
     model = Comment
 
-
+#Модель Апвоутов в админке
 class UpvoteAdmin(TabularInline):
     model = Upvote
 
-
+#Модель Даунвоутов в админке
 class DownvoteAdmin(TabularInline):
     model = Downvote
 
-
+#Модель Постов в админке
 class PostAdmin(admin.ModelAdmin):
     inlines = [UpvoteAdmin, DownvoteAdmin, CommentAdmin]
     list_display = ('title', 'category', 'pub_date', 'user')

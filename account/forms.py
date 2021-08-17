@@ -1,13 +1,12 @@
-from django.forms import fields
 from .models import Account
 from django import forms
 from django.core import validators
 from django.contrib.auth import REDIRECT_FIELD_NAME, get_user_model
-from django.core.exceptions import ValidationError
+# для обращения к objects.all или objects.filter(...)
 User = get_user_model()
 
 
-
+#Форма для редактирования Аккаунта
 class EditProfileForm(forms.ModelForm):
     first_name = forms.CharField(max_length=20 ,widget=forms.TextInput(attrs={
                                                            'class': 'form-control',
@@ -37,7 +36,7 @@ class EditProfileForm(forms.ModelForm):
         fields = '__all__'
         exclude = ['user']
 
-
+#Форма для входа
 class LoginForm(forms.Form):
     username = forms.CharField(widget=forms.TextInput(attrs={
                                                             'class': 'form-control',
@@ -56,7 +55,7 @@ class LoginForm(forms.Form):
             raise forms.ValidationError("Такого логина не существует")
         return username
 
-
+#Форма для регистрации
 class RegistrationForm(forms.Form):
     username = forms.CharField(max_length=20 ,widget=forms.TextInput(attrs={
                                                             'class': 'form-control',

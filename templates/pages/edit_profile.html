@@ -1,3 +1,4 @@
+<!--Шаблон для редактирования профиля-->
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block title %}Мой профиль {% endblock title %}
@@ -7,10 +8,11 @@
     #textfield{
         resize: none;
     }
-	
 </style>
 
-
+<div class ="row" id="basic">
+    <div class="col-2 bg-dark" id="category"></div>
+ <div class="margify col-10 bg-secondary">
 <form method="POST" id="profileForm"enctype="multipart/form-data">
     {% csrf_token %}
 <div class="container-sm my-5 bg-white col-6 border border-dark rounded-3 border-2" id="account">
@@ -56,45 +58,38 @@
 		  </div>
 		</div>
 	  </div>
- 
+ </div>
+</div>
 
-
-	  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
- //image-box is the id of the div element that will store our cropping image preview
+ 	//"image-box" id дива для превью 
 	const imagebox = document.getElementById('image-box')
-        // crop-btn is the id of button that will trigger the event of change original file with cropped file.
+    //id кнопок в модальном окне для обрезки или отмены
 	const crop_btn = document.getElementById('crop-btn')
 	const cancel_btn = document.getElementById('cancel-crop')
-	// id_image is the id of the input tag where we will upload the image
+	// id_prof_image id для загрузки файла из формы
 	const input = document.getElementById('id_prof_image')
+	// отмена изменений, чтобы не было ошибки при повторной загрузке файла
 	cancel_btn.addEventListener('click', () =>{
 		  document.getElementById("id_prof_image").value = ""
 	  })
-	// When user uploads the image this event will get triggered
+	// если загружается фото в форму, то:
 	input.addEventListener('change', ()=>{
-	  // Getting image file object from the input variable
+	  // в переменную заносится файл из формы
 	  const img_data = input.files[0]
-	  // createObjectURL() static method creates a DOMString containing a URL representing the object given in the parameter.
-	  // The new object URL represents the specified File object or Blob object.
+	  // в переменную заносится урл картинки
 	  const url = URL.createObjectURL(img_data)
-	  // Creating a image tag inside imagebox which will hold the cropping view image(uploaded file) to it using the url created before.
+	  // создание тега для картинки
 	  imagebox.innerHTML = `<img src="${url}" id="image" style="width:100%;">`
-	  // Storing that cropping view image in a variable
-	  
+	  // хранение обрезанной картинки в переменной
 	  const image = document.getElementById('image')
+	  // открытие модального окна
 	  $("#cropModal").modal("show");
-	  // Displaying the image box
 	  document.getElementById('image-box').style.display = 'block'
-	  // Displaying the Crop buttton
 	  document.getElementById('crop-btn').style.display = 'block'
-	  // Hiding the Post button
 	  document.getElementById('confirm-btn').style.display = 'none'
-	 
-	  
-	  // Creating a croper object with the cropping view image
-	  // The new Cropper() method will do all the magic and diplay the cropping view and adding cropping functionality on the website
-	  // For more settings, check out their official documentation at https://github.com/fengyuanchen/cropperjs
+	  // создание нового cropper'а с загруженной ранее картинкой
 	  $("#cropModal").on("shown.bs.modal", function () {
 	  const cropper = new Cropper(image, {
       aspectRatio: 9 / 9,
@@ -106,29 +101,19 @@
 	  minCropBoxWidth: 200,
 	  minCropBoxHeight: 200,
 	  })
-	
-	 
-	  // When crop button is clicked this event will get triggered
+
+
 	  crop_btn.addEventListener('click', ()=>{
-	    // This method coverts the selected cropped image on the cropper canvas into a blob object
+	    // конвертирование обрезанной картинки
 	    cropper.getCroppedCanvas().toBlob((blob)=>{
-	      // Gets the original image data
+  		  // замена оригинальной картинки картинкой cropper'а
 	      let fileInputElement = document.getElementById('id_prof_image');
-	      // Make a new cropped image file using that blob object, image_data.name will make the new file name same as original image
 	      let file = new File([blob], img_data.name,{type:"image/*", lastModified:new Date().getTime()});
-	      // Create a new container
 	      let container = new DataTransfer();
-	      // Add the cropped image file to the container
 	      container.items.add(file);
-	      // Replace the original image file with the new cropped image file
 	      fileInputElement.files = container.files;
-		 
-	      // Hide the cropper box
-	      //document.getElementById('image-box').style.display = 'none'
-	      // Hide the crop button
 	      document.getElementById('crop-btn').style.display = 'none'
-	      // Display the Post button
-	      //document.getElementById('confirm-btn').style.display = 'block'
+	      //небольшой костыль для отправки формы
 		  document.getElementById('confirm-btn').click()
 			
 	      });

@@ -1,7 +1,4 @@
-from django import forms
 from django.contrib import messages
-from django.core.exceptions import ValidationError
-from django.http.response import HttpResponse
 from django.shortcuts import redirect, render
 from django.http import Http404
 from django.contrib.auth import authenticate,login, logout, get_user_model
@@ -14,6 +11,7 @@ from .forms import EditProfileForm, LoginForm, RegistrationForm
 User=get_user_model()
 
 
+#Вью редактирования профиля
 def edit_profile_view(request, username, *args, **kwargs):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -28,9 +26,6 @@ def edit_profile_view(request, username, *args, **kwargs):
             form = EditProfileForm(request.POST or None, request.FILES or None, instance=account)
             if form.is_valid():
                 form.save()
-   #             account = form.save(commit=False)
-   #             account.user = request.user
-   #             account.save()
                 return redirect (request.path_info)
         else:
             form = EditProfileForm(instance=account)
@@ -42,6 +37,7 @@ def edit_profile_view(request, username, *args, **kwargs):
     return render (request, 'pages/edit_profile.html', context)
 
 
+#Вью просмотра профиля
 def profile_view(request, username, *args, **kwargs):
     qs = Account.objects.filter(user__username=username)
     if not qs.exists():
@@ -52,6 +48,7 @@ def profile_view(request, username, *args, **kwargs):
     return render(request, "pages/profile.html", context)
 
 
+#Вью логина
 def login_view(request, *args, **kwargs):
     if request.user.is_authenticated:
         return redirect('/')
@@ -78,6 +75,7 @@ def login_view(request, *args, **kwargs):
     return render(request, 'pages/auth.html', context)
 
 
+#Вью регистрации
 def registration_view(request, *args, **kwargs):
     if request.user.is_authenticated:
         return redirect('/')
@@ -110,7 +108,7 @@ def registration_view(request, *args, **kwargs):
     }
     return render(request, 'pages/auth.html', context)
 
-
+#Вью выхода из профиля
 def logout_view(request, *args, **kwargs):
     logout(request)
     return redirect("/login")

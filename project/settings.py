@@ -12,7 +12,9 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
-
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -25,7 +27,6 @@ SECRET_KEY = 'django-insecure-ewo)3o64shxms_m@_cd&%!2ttf7ug&m$+s7^%%3*_k^#cx07x3
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-
 ALLOWED_HOSTS = ['http://localhost:3000/', '127.0.0.1', 'http://localhost:8000/', 'localhost', 'social-soc1.herokuapp.com']
 
 
@@ -43,6 +44,8 @@ INSTALLED_APPS = [
     'crispy_forms',
     'corsheaders',
     'rest_framework',
+    'cloudinary_storage',
+    'cloudinary',
     #мои приложения
     'wall',
     'account',
@@ -148,6 +151,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, "static-root")
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # мои настройки
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dsvbrtzlb',
+    'API_KEY': '624722967466157',
+    'API_SECRET': '6Em2xwnKtUptFzxs2IEqzwlCddQ'
+}
+
+
 LOGOUT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 #CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
@@ -162,8 +172,9 @@ REST_FRAMEWORK = {
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_URLS_REGEX = r'^/api/.*$'
-MEDIA_ROOT = os.path.join(BASE_DIR, "images")
+#MEDIA_ROOT = os.path.join(BASE_DIR, "images")
 MEDIA_URL = 'images/'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 POST_RATE_OPTIONS = ['upvote', 'downvote']
 DEFAULT_RENDERER_CLASSES = [
         'rest_framework.renderers.JSONRenderer',
@@ -173,11 +184,12 @@ DEFAULT_AUTHENTICATION_CLASSES =[
     #'rest_framework.authentication.TokenAuthentication',
     'rest_framework.authentication.SessionAuthentication'
 ]
-# убрать после завершения проекта!!
+# только при дебаге
 if DEBUG:
    DEFAULT_RENDERER_CLASSES += [
        'rest_framework.renderers.BrowsableAPIRenderer',
    ]
+# аутентификация для реакта
    DEFAULT_AUTHENTICATION_CLASSES += [
        'project.rest_api.test.TestAuthentication'
    ]

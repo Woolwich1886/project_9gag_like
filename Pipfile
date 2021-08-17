@@ -13,6 +13,8 @@ django-crispy-forms = "*"
 django-cleanup = "*"
 gunicorn = "*"
 whitenoise = "*"
+cloudinary = "*"
+dj3-cloudinary-storage = "*"
 
 [dev-packages]
 

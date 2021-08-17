@@ -1,7 +1,6 @@
-from rest_framework.decorators import api_view, authentication_classes, permission_classes, authentication_classes
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.authentication import SessionAuthentication
 from rest_framework.pagination import PageNumberPagination # пагинация
 
 from ..serializers import CommentSerializer, PostRateSerializer, PostSerializer
@@ -14,7 +13,6 @@ from ..models import Comment, Post
 def delete_post(request, post_id, *args, **kwargs):
     paginator = PageNumberPagination()
     paginator.page_size = 2
-    print(args, kwargs)
     qs = Post.objects.filter(id=post_id)
     print(Post.objects.filter(id=post_id))
     if not qs.exists():
@@ -25,8 +23,6 @@ def delete_post(request, post_id, *args, **kwargs):
     post = qs.first()
     post.delete()
     return Response({"message":"Пост успешно удален"}, status=200)
-
-
 
 
 # удаление коммента
@@ -51,18 +47,18 @@ def delete_comment(request, com_id, *args, **kwargs):
 @permission_classes([IsAuthenticated])
 def send_comment(request, *args, **kwargs):
     serializer = CommentSerializer(data=request.data)
-    #print(request.data)
+    print(request.data)
     if serializer.is_valid(raise_exception=True):
         data = serializer.validated_data
         post = data.get("post")
         text = data.get("text")
         user = request.user
         qs = Post.objects.filter(id=post.id)
-        #print(request.data)
+        print(request.data)
         item = qs.first()
-        #print(item ,user, text)
+        print(item ,user, text)
         c = Comment(post=item, user=user, text=text)
-       # print(c)
+        #print(c)
         c.save()
         item_com = get_comments(item ,request.data.get('sortType'), request.user)
         ser = PostSerializer(item, context={'req_user': request.user, 'comments': item_com})
@@ -107,7 +103,7 @@ def post_rate_view(request, *args, **kwargs):
             return Response(serializer.data, status=200)
     return Response({}, status=200) 
 
-# основная лента
+# лента постов
 @api_view(['GET'])
 def api_postview(request, *args, **kwargs):
     paginator = PageNumberPagination()
@@ -127,21 +123,21 @@ def api_postview(request, *args, **kwargs):
 
 
 # каждый пост отдельно
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def api_detail_postview(request, id, *args, **kwargs):
-    print(request.data)
+    #print(request.data)
     qs = Post.objects.filter(id=id)
     if not qs.exists():
         return Response({}, status=404)
     item = qs.first()
-    print(item.comments.all())
+    #print(item.comments.all())
     item_com = get_comments(item ,request.data.get('sortType'), request.user)
     ser = PostSerializer(item, context={'req_user': request.user, 'comments': item_com})
    # print(request.user)
     #print(ser.data,)
     return Response(ser.data, status=200)
+
 
 # кнопка сортировки
 @api_view(['POST'])
@@ -161,7 +157,7 @@ def api_sortview(request, id, *args, **kwargs):
     #print(ser.data,)
     
 
-# функция для сериализатора комментов
+# функция для сериализатора комментов (сортировки)
 def get_comments(item, request, user):
     if request == 'old':
         cms=item.comments.order_by('id')

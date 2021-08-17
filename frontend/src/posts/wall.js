@@ -49,7 +49,6 @@ export function Menubar() {
 
 function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
-  // Show button when page is scorlled upto given distance
   function toggleVisibility() {
     if (window.pageYOffset > 300) {
       setIsVisible(true);
@@ -57,8 +56,6 @@ function ScrollToTop() {
       setIsVisible(false);
     }
   };
-  // Set the top cordinate to 0
-  // make scrolling smooth
   function scrollToTop() {
     window.scrollTo({
       top: 0,

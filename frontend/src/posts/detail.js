@@ -13,7 +13,7 @@ export function DetailPost(props) {
       setPostList(response)
       setPostIsLoad(true)
     }
-    BeData('GET', `http://localhost:8000/api/posts/${postid}`, WallList)
+    BeData('GET', `posts/${postid}`, WallList)
   }, [postid])   
     return  <React.Fragment>{postIsLoad ?
     <>

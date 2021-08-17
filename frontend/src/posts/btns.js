@@ -11,7 +11,7 @@ export function DelPostBtn (props) {
             console.log(response, status)
         }
         if (window.confirm("Вы действительно хотите удалить пост?")) {
-            setIsDel(true); BeData("DELETE", `http://localhost:8000/api/posts/${event.target.value}/delete/`, callback)}
+            setIsDel(true); BeData("DELETE", `posts/${event.target.value}/delete/`, callback)}
     }
     return <div>
     {isDel === false 
@@ -39,7 +39,7 @@ export function DelCommBtn(props){
             console.log(response, status)
         }
         if (window.confirm("Вы действительно хотите удалить комментарий?")) {
-            setIsDel(true); BeData("DELETE", `http://localhost:8000/api/comments/${event.target.value}/delete/`, callback)}
+            setIsDel(true); BeData("DELETE", `comments/${event.target.value}/delete/`, callback)}
     }
     return <div>  
     {isDel === false 
@@ -87,7 +87,7 @@ export function RateBtn(props) {
     const data = JSON.stringify({id: post.id, vote_type: action})
     const xhr = new XMLHttpRequest()
     xhr.responseType = 'json'
-    xhr.open('POST', 'http://localhost:8000/api/post/rate/')
+    xhr.open('POST', 'post/rate/')
     xhr.setRequestHeader("Content-Type", "application/json")
    const csrftoken = getCookie('csrftoken');
     if (csrftoken){

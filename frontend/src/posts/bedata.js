@@ -9,7 +9,8 @@ export function BeData(method, url, callback, data) {
   const xhr = new XMLHttpRequest()
   xhr.responseType = 'json'
   const csrftoken = getCookie('csrftoken');
-  xhr.open(method, url)
+  //xhr.open(method, `http://localhost:8000/api/${url}`)
+  xhr.open(method, `https://social-soc1.herokuapp.com//api/${url}`)
   if (csrftoken){
     //xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
     xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
@@ -57,11 +58,11 @@ export function ListOfPosts(props) {
       setPostList(response.results)
     }
     if (username) {
-      BeData('GET', `http://localhost:8000/api/posts/?username=${username}`, WallList)
+      BeData('GET', `posts/?username=${username}`, WallList)
     } else if (category) {
-      BeData('GET', `http://localhost:8000/api/posts/?category=${category}`, WallList)
+      BeData('GET', `posts/?category=${category}`, WallList)
     } else {
-      BeData('GET', 'http://localhost:8000/api/posts', WallList)
+      BeData('GET', 'posts', WallList)
     }
   }, [username, category])
   function NewPartOfPosts() {

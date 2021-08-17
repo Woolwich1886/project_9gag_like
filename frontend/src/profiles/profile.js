@@ -13,7 +13,7 @@ export function ProfileView(props){
             setProfData(response)
             setIsload(true)
         }
-        BeData("GET", `http://localhost:8000/api/profile/${username}`, ProfileLoad)
+        BeData("GET", `profile/${username}`, ProfileLoad)
     }, [username])
 
 

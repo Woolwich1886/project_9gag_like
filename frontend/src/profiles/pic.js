@@ -11,7 +11,7 @@ export function ProfPic(props){
             setPicture(response.badge_url)
         }
         if (user!==undefined) {
-            BeData("GET", `http://localhost:8000/api/profile/${user}/badge/`, callback)}
+            BeData("GET", `profile/${user}/badge/`, callback)}
     }, [user])
     
     

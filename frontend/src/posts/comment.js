@@ -26,7 +26,7 @@ export function SendComment(props) {
   function handleSubmit (evt) {
       evt.preventDefault();
       data={post: post.id, text: commentText, sortType: sortType}
-      BeData("POST", "http://localhost:8000/api/posts/send_comment", callback, data)
+      BeData("POST", "posts/send_comment", callback, data)
       setCommentText("")
   }
 
@@ -35,7 +35,7 @@ export function SendComment(props) {
     setSortType(event.target.value)
     console.log('btn value is ',event.target.value)
     console.log('sortType is ', sortType)
-    BeData("POST", `http://localhost:8000/api/posts/${post.id}/sort`, callback, {sortType: event.target.value})
+    BeData("POST", `posts/${post.id}/sort`, callback, {sortType: event.target.value})
   }
 
   return (<React.Fragment>

@@ -10,7 +10,7 @@ export function BeData(method, url, callback, data) {
   xhr.responseType = 'json'
   const csrftoken = getCookie('csrftoken');
   //xhr.open(method, `http://localhost:8000/api/${url}`)
-  xhr.open(method, `https://social-soc1.herokuapp.com//api/${url}`)
+  xhr.open(method, `https://social-soc1.herokuapp.com/api/${url}`)
   if (csrftoken){
     //xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
     xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")

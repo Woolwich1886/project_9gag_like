@@ -8,6 +8,8 @@
 <div class="container overflow-auto p-2 position-relative bg-white border border-info border-4 rounded-3"
     style="width: 325px; margin-top: 5%;">
     <h2 class="text-center">{{ title }}</h2>
+    <p>username: adm</p>
+    <p>password: 1</p>
     <form method="POST">
         {% csrf_token %}
         <p>{{ form.username.label}}

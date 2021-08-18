@@ -11,8 +11,8 @@ export function BeData(method, url, callback, data) {
   const xhr = new XMLHttpRequest()
   xhr.responseType = 'json'
   const csrftoken = getCookie('csrftoken');
-  xhr.open(method, `http://localhost:8000/api/${url}`)
-  //xhr.open(method, `https://social-soc1.herokuapp.com/api/${url}`)
+  //xhr.open(method, `http://localhost:8000/api/${url}`)
+  xhr.open(method, `https://social-soc1.herokuapp.com/api/${url}`)
   if (csrftoken){
     xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
     xhr.setRequestHeader("X-CSRFToken", csrftoken)}

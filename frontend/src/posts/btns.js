@@ -88,8 +88,8 @@ export function RateBtn(props) {
     const data = JSON.stringify({ id: post.id, vote_type: action })
     const xhr = new XMLHttpRequest()
     xhr.responseType = 'json'
-    //xhr.open('POST', 'http://localhost:8000/api/post/rate/')
-    xhr.open('POST', 'https://social-soc1.herokuapp.com/api/post/rate/')
+    xhr.open('POST', 'http://localhost:8000/api/post/rate/')
+    //xhr.open('POST', 'https://social-soc1.herokuapp.com/api/post/rate/')
     xhr.setRequestHeader("Content-Type", "application/json")
     const csrftoken = getCookie('csrftoken');
     if (csrftoken) {

@@ -45,11 +45,11 @@
     <div class="text-center">
         {% if title == 'Авторизация' %}
         <p>Еще не зарегистрированы?
-            <br>Пройдите <a href='{% url ' registration' %}'>регистрацию</a>
+            <br>Пройдите <a href="{% url 'registration' %}">регистрацию</a>
         </p>
         {% else %}
         <p>Ужа зарегистрированы?
-            <br><a href='{% url ' login' %}'>Авторизуйтесь</a>
+            <br><a href="{% url 'login' %}">Авторизуйтесь</a>
         </p>
         {% endif %}
     </div>

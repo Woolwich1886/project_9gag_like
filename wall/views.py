@@ -1,6 +1,7 @@
 from wall.forms import PostForm
 from django.shortcuts import redirect, render
-
+from .models import Category
+from django.http import Http404
 
 # Create your views here.
 
@@ -18,6 +19,9 @@ def postview(request, *args, **kwargs):
 
 
 def categoryview(request, category, *args, **kwargs):
+    if not Category.objects.filter(name=category).exists():
+        print(category)
+        return render(request, 'pages/404.html')
     return render(request, 'pages/category.html', context={'category': category})
 
 # Контроллер создания поста
@@ -41,3 +45,7 @@ def createview(request, *args, **kwargs):
         'btn_text': 'Опубликовать'
     }
     return render(request, 'pages/create.html', context)
+
+def error_404(request, exception):
+        data = {}
+        return render(request,'pages/404.html', data)

@@ -28,7 +28,7 @@ urlpatterns = [
     path('', include('wall.api.urls')),  # урлы api wall
 
 ]
-
+handler404 = 'wall.views.error_404'
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL,
                           document_root=settings.STATIC_ROOT)

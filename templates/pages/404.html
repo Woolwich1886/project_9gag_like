@@ -1,0 +1,41 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+<style>
+    .container {
+        text-align: center;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -80%);
+        padding: 10px;
+    }
+</style>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<title>404 Ошибка</title>
+<!------ Include the above in your HEAD tag ---------->
+</head>
+<body>
+    <div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="error-template">
+                <h1>
+                    Ой!</h1>
+                <h2>
+                    404 Ошибка</h2>
+                <div class="error-details">
+                    <h4>К сожалению, запрашиваемая страница не найдена.</h4>
+                </div>
+                <div class="error-actions">
+                    <a href="{% url 'login' %}" class="btn btn-primary"><span class="glyphicon glyphicon-home"></span>
+                        На главную </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

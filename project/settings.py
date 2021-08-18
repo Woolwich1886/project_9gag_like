@@ -27,7 +27,8 @@ SECRET_KEY = 'django-insecure-ewo)3o64shxms_m@_cd&%!2ttf7ug&m$+s7^%%3*_k^#cx07x3
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
-ALLOWED_HOSTS = ['http://localhost:3000/', '127.0.0.1', 'http://localhost:8000/', 'localhost', 'social-soc1.herokuapp.com']
+ALLOWED_HOSTS = ['http://localhost:3000/', '127.0.0.1',
+                 'http://localhost:8000/', 'localhost', 'social-soc1.herokuapp.com']
 
 
 # Application definition
@@ -39,26 +40,26 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #приложения
-    'django_cleanup',
+    # приложения
+    # 'django_cleanup',
     'crispy_forms',
     'corsheaders',
     'rest_framework',
     'cloudinary_storage',
     'cloudinary',
-    #мои приложения
+    # мои приложения
     'wall',
     'account',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-     'whitenoise.middleware.WhiteNoiseMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.middleware.locale.LocaleMiddleware',#
+    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -69,7 +70,8 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "templates")], # подключил папку шаблонов, потому что она не находится в папке приложения
+        # подключил папку шаблонов, потому что она не находится в папке приложения
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -108,12 +110,12 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
         'OPTIONS': {'min_length': 1}
     },
-    #отключить проверку часто встречающихся паролей{
+    # отключить проверку часто встречающихся паролей{
     #    'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-   # },
-   # чтобы пароль мог содержать одни цифры{
-        #'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-  #  },
+    # },
+    # чтобы пароль мог содержать одни цифры{
+    # 'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    #  },
 ]
 
 
@@ -122,9 +124,9 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-LANGUAGES =[
+LANGUAGES = [
     ('en', 'English'),
-    ('ru', 'Russian'),  
+    ('ru', 'Russian'),
 ]
 
 TIME_ZONE = 'UTC'
@@ -162,9 +164,9 @@ LOGOUT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 #CORS_ORIGIN_WHITELIST = ['http://localhost:3000']
 REST_FRAMEWORK = {
-    
+
     'DEFAULT_PERMISSION_CLASES': [
-        #'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
+        # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly',
         'rest_framework.permissions.IsAuthenticated'
     ]
 }
@@ -177,24 +179,24 @@ MEDIA_URL = 'images/'
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 POST_RATE_OPTIONS = ['upvote', 'downvote']
 DEFAULT_RENDERER_CLASSES = [
-        'rest_framework.renderers.JSONRenderer',
-    ]
-DEFAULT_AUTHENTICATION_CLASSES =[
-    #'rest_framework.authentication.BasicAuthentication'
-    #'rest_framework.authentication.TokenAuthentication',
+    'rest_framework.renderers.JSONRenderer',
+]
+DEFAULT_AUTHENTICATION_CLASSES = [
+    # 'rest_framework.authentication.BasicAuthentication'
+    # 'rest_framework.authentication.TokenAuthentication',
     'rest_framework.authentication.SessionAuthentication'
 ]
 # только при дебаге
 if DEBUG:
-   DEFAULT_RENDERER_CLASSES += [
-       'rest_framework.renderers.BrowsableAPIRenderer',
-   ]
+    DEFAULT_RENDERER_CLASSES += [
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ]
 # аутентификация для реакта
-   DEFAULT_AUTHENTICATION_CLASSES += [
-       'project.rest_api.test.TestAuthentication'
-   ]
+    DEFAULT_AUTHENTICATION_CLASSES += [
+        'project.rest_api.test.TestAuthentication'
+    ]
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': DEFAULT_AUTHENTICATION_CLASSES,
     'DEFAULT_RENDERER_CLASSES': DEFAULT_RENDERER_CLASSES
-     
+
 }

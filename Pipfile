@@ -17,6 +17,7 @@ cloudinary = "*"
 dj3-cloudinary-storage = "*"
 
 [dev-packages]
+autopep8 = "*"
 
 [requires]
 python_version = "3.8"

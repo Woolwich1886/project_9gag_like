@@ -20,8 +20,10 @@ export function BeData(method, url, callback, data) {
   xhr.onload = function() {
     if (xhr.status === 200 || xhr.status === 201) {
       callback(xhr.response, xhr.status)
+    } else if (xhr.status === 403) {
+      window.location.href = "/login"
     } else {
-      console.log('some error', xhr.status, xhr.response)
+      console.log(xhr.status, xhr.response)
     }
   }
   xhr.onerror = function (e) {

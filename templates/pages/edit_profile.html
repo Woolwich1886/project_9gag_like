@@ -5,120 +5,131 @@
 
 {% block content %}
 <style>
-    #textfield{
-        resize: none;
-    }
+	#textfield {
+		resize: none;
+	}
 </style>
 
-<div class ="row" id="basic">
-    <div class="col-2 bg-dark" id="category"></div>
- <div class="margify col-10 bg-secondary">
-<form method="POST" id="profileForm"enctype="multipart/form-data">
-    {% csrf_token %}
-<div class="container-sm my-5 bg-white col-6 border border-dark rounded-3 border-2" id="account">
-    <div class="row p-3"">
-        <div class="col-4 text-center"><img class=" border border-dark border-2 rounded-circle" src="{{account.prof_image.url}}"  width="100%" alt="prof_image"</img>
-            <label id="change_image" class="btn btn-success btn-sm my-2 justify-content-center">Сменить фото {{form.prof_image}}</label>
-        </div>
-        <div class="col-8">
-        <div class="row">
-        
-            <div class="row">
-                <div class="col-6">{{form.first_name.label}}{{form.first_name}}</div> 
-                <div class="col-6">{{form.second_name.label}}{{form.second_name}}</div>
-            <div class="row">
-                <div id="textfield" class="col-12 p-4">{{form.about|as_crispy_field}}</div>
-            </div>
-        </div>
-        </div>
-    </div>
-</div>
-<button id ="classicSubmit" type="submit" class='btn btn-success my-5 position-relative top-50 start-50 translate-middle'>
-    Редактировать
-</button>
+<div class="row" id="basic">
+	<div class="col-2 bg-dark" id="category"></div>
+	<div class="margify col-10 bg-secondary">
 
-<div class="form-group"> 
-    <button class="btn btn-outline-info" id="confirm-btn" style="width: 100%; margin-top: 10px; display: none" type="submit">Опубликовать</button>
-  </div>
-</form>
-	 <div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true">
-		<div class="modal-dialog">
-		  <div class="modal-content">
-			<div class="modal-header">
-			  <h5 class="modal-title" id="cropModalLabel">Modal title</h5>
-			  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+		<div class="container-sm my-5 bg-white col-6 border border-dark rounded-3 border-2" id="account">
+			<div class="row p-3"">
+        <div class=" col-4 text-center"><img class=" border border-dark border-2 rounded-circle"
+					src="{{account.prof_image.url}}" width="100%" alt="prof_image" </img>
+				<form method="POST" id='profileForm' enctype="multipart/form-data">
+					{% csrf_token %}
+					<label id="change_image" class="btn btn-success btn-sm my-2 justify-content-center">Сменить фото
+						{{badge_form.prof_image}}</label>
+					<button name='badgebtn' class="btn btn-outline-info" id="confirm-btn"
+						style="width: 100%; margin-top: 10px; display: none" type="submit">Опубликовать</button>
+				</form>
 			</div>
-			<div class="modal-body">
-				<div id="image-box" class="image-container"></div>
+
+			<div class="col-8">
+				<div class="row">
+					<form method="POST">
+						{% csrf_token %}
+						<div class="row">
+							<div class="col-6">{{form.first_name.label}}{{form.first_name}}</div>
+							<div class="col-6">{{form.second_name.label}}{{form.second_name}}</div>
+							<div class="row">
+								<div id="textfield" class="col-12 p-4">{{form.about|as_crispy_field}}</div>
+							</div>
+						</div>
+
+				</div>
 			</div>
-			<div class="modal-footer">
-			  <button id="cancel-crop" type="button" class="btn btn-danger" data-bs-dismiss="modal">Отмена</button>
-			  <button id="crop-btn" class="btn btn-success" data-bs-dismiss="modal" type="button">Обрезать</button>
-			</div>
-		  </div>
 		</div>
-	  </div>
- </div>
+		<button name="profilebtn" id="classicSubmit" type="submit"
+			class='btn btn-success my-5 position-relative top-50 start-50 translate-middle'>
+			Редактировать
+		</button>
+		</form>
+		<div class="form-group">
+
+		</div>
+		<div class="modal fade" id="cropModal" tabindex="-1" aria-labelledby="cropModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="cropModalLabel">Modal title</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<div id="image-box" class="image-container"></div>
+					</div>
+					<div class="modal-footer">
+						<button id="cancel-crop" type="button" class="btn btn-danger"
+							data-bs-dismiss="modal">Отмена</button>
+						<button id="crop-btn" class="btn btn-success" data-bs-dismiss="modal"
+							type="button">Обрезать</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script>
- 	//"image-box" id дива для превью 
+	//"image-box" id дива для превью 
 	const imagebox = document.getElementById('image-box')
-    //id кнопок в модальном окне для обрезки или отмены
+	//id кнопок в модальном окне для обрезки или отмены
 	const crop_btn = document.getElementById('crop-btn')
 	const cancel_btn = document.getElementById('cancel-crop')
 	// id_prof_image id для загрузки файла из формы
 	const input = document.getElementById('id_prof_image')
 	// отмена изменений, чтобы не было ошибки при повторной загрузке файла
-	cancel_btn.addEventListener('click', () =>{
-		  document.getElementById("id_prof_image").value = ""
-	  })
+	cancel_btn.addEventListener('click', () => {
+		document.getElementById("id_prof_image").value = ""
+	})
 	// если загружается фото в форму, то:
-	input.addEventListener('change', ()=>{
-	  // в переменную заносится файл из формы
-	  const img_data = input.files[0]
-	  // в переменную заносится урл картинки
-	  const url = URL.createObjectURL(img_data)
-	  // создание тега для картинки
-	  imagebox.innerHTML = `<img src="${url}" id="image" style="width:100%;">`
-	  // хранение обрезанной картинки в переменной
-	  const image = document.getElementById('image')
-	  // открытие модального окна
-	  $("#cropModal").modal("show");
-	  document.getElementById('image-box').style.display = 'block'
-	  document.getElementById('crop-btn').style.display = 'block'
-	  document.getElementById('confirm-btn').style.display = 'none'
-	  // создание нового cropper'а с загруженной ранее картинкой
-	  $("#cropModal").on("shown.bs.modal", function () {
-	  const cropper = new Cropper(image, {
-      aspectRatio: 9 / 9,
-	  autoCropArea: 1,
-	  viewMode: 1,
-	  scalable: false,
-	  zoomable: false,
-	  movable: false,
-	  minCropBoxWidth: 200,
-	  minCropBoxHeight: 200,
-	  })
+	input.addEventListener('change', () => {
+		// в переменную заносится файл из формы
+		const img_data = input.files[0]
+		// в переменную заносится урл картинки
+		const url = URL.createObjectURL(img_data)
+		// создание тега для картинки
+		imagebox.innerHTML = `<img src="${url}" id="image" style="width:100%;">`
+		// хранение обрезанной картинки в переменной
+		const image = document.getElementById('image')
+		// открытие модального окна
+		$("#cropModal").modal("show");
+		document.getElementById('image-box').style.display = 'block'
+		document.getElementById('crop-btn').style.display = 'block'
+		document.getElementById('confirm-btn').style.display = 'none'
+		// создание нового cropper'а с загруженной ранее картинкой
+		$("#cropModal").on("shown.bs.modal", function () {
+			const cropper = new Cropper(image, {
+				aspectRatio: 9 / 9,
+				autoCropArea: 1,
+				viewMode: 1,
+				scalable: false,
+				zoomable: false,
+				movable: false,
+				minCropBoxWidth: 200,
+				minCropBoxHeight: 200,
+			})
 
 
-	  crop_btn.addEventListener('click', ()=>{
-	    // конвертирование обрезанной картинки
-	    cropper.getCroppedCanvas().toBlob((blob)=>{
-  		  // замена оригинальной картинки картинкой cropper'а
-	      let fileInputElement = document.getElementById('id_prof_image');
-	      let file = new File([blob], img_data.name,{type:"image/*", lastModified:new Date().getTime()});
-	      let container = new DataTransfer();
-	      container.items.add(file);
-	      fileInputElement.files = container.files;
-	      document.getElementById('crop-btn').style.display = 'none'
-	      //небольшой костыль для отправки формы
-		  document.getElementById('confirm-btn').click()
-			
-	      });
-	    });
-	});	
-})
+			crop_btn.addEventListener('click', () => {
+				// конвертирование обрезанной картинки
+				cropper.getCroppedCanvas().toBlob((blob) => {
+					// замена оригинальной картинки картинкой cropper'а
+					let fileInputElement = document.getElementById('id_prof_image');
+					let file = new File([blob], img_data.name, { type: "image/*", lastModified: new Date().getTime() });
+					let container = new DataTransfer();
+					container.items.add(file);
+					fileInputElement.files = container.files;
+					document.getElementById('crop-btn').style.display = 'none'
+					//небольшой костыль для отправки формы
+					document.getElementById('confirm-btn').click()
+
+				});
+			});
+		});
+	})
 </script>
 {% endblock content %}

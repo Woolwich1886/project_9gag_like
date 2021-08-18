@@ -22,12 +22,13 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('account.urls')), # урлы account
-    path('', include('account.api.urls')),# урлы api account
-    path('', include('wall.urls')), # урлы приложения wall
-    path('', include('wall.api.urls')), # урлы api wall
-    
+    path('', include('account.urls')),  # урлы account
+    path('', include('account.api.urls')),  # урлы api account
+    path('', include('wall.urls')),  # урлы приложения wall
+    path('', include('wall.api.urls')),  # урлы api wall
+
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.STATIC_URL,
+                          document_root=settings.STATIC_ROOT)

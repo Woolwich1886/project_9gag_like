@@ -7,8 +7,6 @@ import reportWebVitals from './reportWebVitals';
 import { DetailPost, ListOfPosts, Menubar } from './posts';
 import { ProfileView } from './profiles';
 
-
-
 //const element = <Welcome name="Алиса" />;
 //Когда React встречает подобный элемент, 
 //он собирает все JSX-атрибуты и дочерние элементы в один объект 
@@ -17,15 +15,16 @@ const wallElement = document.getElementById('root')
 if (wallElement) {
   ReactDOM.render(<App />, wallElement)
 }
-
+//задание пропсов через датасет, чтобы не задавать их вручную каждый раз
 const e = React.createElement
+
+
 const listElement = document.getElementById('list')
 if (listElement) {
   ReactDOM.render(
     e(ListOfPosts, listElement.dataset), listElement
   )
 }
-
 
 
 const postElement = document.getElementById('detail')

@@ -1,7 +1,7 @@
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view, permission_classes, authentication_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.pagination import PageNumberPagination # пагинация
+from rest_framework.pagination import PageNumberPagination  # пагинация
 
 from ..serializers import CommentSerializer, PostRateSerializer, PostSerializer
 from ..models import Comment, Post
@@ -19,10 +19,11 @@ def delete_post(request, post_id, *args, **kwargs):
         return Response({}, status=404)
     user = qs.filter(user=request.user)
     if not qs.exists():
-        return Response({"message":"Вам не позволено удалять этот комментарий"}, status=401)
+        return Response({"message": "Вам не позволено удалять этот комментарий"}, status=401)
     post = qs.first()
+    post.image.delete()
     post.delete()
-    return Response({"message":"Пост успешно удален"}, status=200)
+    return Response({"message": "Пост успешно удален"}, status=200)
 
 
 # удаление коммента
@@ -36,10 +37,10 @@ def delete_comment(request, com_id, *args, **kwargs):
         return Response({}, status=404)
     user = qs.filter(user=request.user)
     if not qs.exists():
-        return Response({"message":"Вам не позволено удалять этот комментарий"}, status=401)
+        return Response({"message": "Вам не позволено удалять этот комментарий"}, status=401)
     com = qs.first()
     com.delete()
-    return Response ({"message":"Комментарий успешно удален"}, status=200)
+    return Response({"message": "Комментарий успешно удален"}, status=200)
 
 
 # отправка коммента
@@ -56,20 +57,23 @@ def send_comment(request, *args, **kwargs):
         qs = Post.objects.filter(id=post.id)
         print(request.data)
         item = qs.first()
-        print(item ,user, text)
+        print(item, user, text)
         c = Comment(post=item, user=user, text=text)
-        #print(c)
+        # print(c)
         c.save()
-        item_com = get_comments(item ,request.data.get('sortType'), request.user)
-        ser = PostSerializer(item, context={'req_user': request.user, 'comments': item_com})
-        
+        item_com = get_comments(
+            item, request.data.get('sortType'), request.user)
+        ser = PostSerializer(
+            item, context={'req_user': request.user, 'comments': item_com})
+
         return Response(ser.data, status=201)
 
 # кнопка голоса
+
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def post_rate_view(request, *args, **kwargs):
-    
     '''
     upvote,downvote
     '''
@@ -86,56 +90,64 @@ def post_rate_view(request, *args, **kwargs):
         if vote_type == "upvote":
             obj.upvotes.add(request.user)
             obj.downvotes.remove(request.user)
-            serializer = PostSerializer(obj, context={'req_user': request.user, 'sort_type': request.data.get('sortType')})
+            serializer = PostSerializer(
+                obj, context={'req_user': request.user, 'sort_type': request.data.get('sortType')})
             return Response(serializer.data, status=200)
         elif vote_type == "downvote":
             obj.downvotes.add(request.user)
             obj.upvotes.remove(request.user)
-            serializer = PostSerializer(obj, context={'req_user': request.user, 'sort_type': request.data.get('sortType')})
+            serializer = PostSerializer(
+                obj, context={'req_user': request.user, 'sort_type': request.data.get('sortType')})
             return Response(serializer.data, status=200)
         elif vote_type == "delupvote":
             obj.upvotes.remove(request.user)
-            serializer = PostSerializer(obj, context={'req_user': request.user, 'sort_type': request.data.get('sortType')})
+            serializer = PostSerializer(
+                obj, context={'req_user': request.user, 'sort_type': request.data.get('sortType')})
             return Response(serializer.data, status=200)
         elif vote_type == "deldownvote":
             obj.downvotes.remove(request.user)
-            serializer = PostSerializer(obj, context={'req_user': request.user, 'sort_type': request.data.get('sortType')})
+            serializer = PostSerializer(
+                obj, context={'req_user': request.user, 'sort_type': request.data.get('sortType')})
             return Response(serializer.data, status=200)
-    return Response({}, status=200) 
+    return Response({}, status=200)
 
 # лента постов
+
+
 @api_view(['GET'])
 def api_postview(request, *args, **kwargs):
     paginator = PageNumberPagination()
     paginator.page_size = 2
     qs = Post.objects.all()
-    username = request.GET.get('username') # ?username = профиль
-    if username !=None:
-        qs=qs.filter(user__username=username)
-    category = request.GET.get('category') # ?category = по категории
-    if category !=None:
-        qs=qs.filter(category__name=category)
+    username = request.GET.get('username')  # ?username = профиль
+    if username != None:
+        qs = qs.filter(user__username=username)
+    category = request.GET.get('category')  # ?category = по категории
+    if category != None:
+        qs = qs.filter(category__name=category)
     qs_pages = paginator.paginate_queryset(qs, request)
-    ser = PostSerializer(qs_pages, many=True, context={'req_user': request.user})
-    #print(ser.data)
+    ser = PostSerializer(qs_pages, many=True, context={
+                         'req_user': request.user})
+    # print(ser.data)
     return paginator.get_paginated_response(ser.data)
-    #return Response(ser.data, status=200)
+    # return Response(ser.data, status=200)
 
 
 # каждый пост отдельно
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def api_detail_postview(request, id, *args, **kwargs):
-    #print(request.data)
+    # print(request.data)
     qs = Post.objects.filter(id=id)
     if not qs.exists():
         return Response({}, status=404)
     item = qs.first()
-    #print(item.comments.all())
-    item_com = get_comments(item ,request.data.get('sortType'), request.user)
-    ser = PostSerializer(item, context={'req_user': request.user, 'comments': item_com})
+    # print(item.comments.all())
+    item_com = get_comments(item, request.data.get('sortType'), request.user)
+    ser = PostSerializer(
+        item, context={'req_user': request.user, 'comments': item_com})
    # print(request.user)
-    #print(ser.data,)
+    # print(ser.data,)
     return Response(ser.data, status=200)
 
 
@@ -149,22 +161,22 @@ def api_sortview(request, id, *args, **kwargs):
     if not qs.exists():
         return Response({}, status=404)
     item = qs.first()
-    item_com = get_comments(item ,request.data.get('sortType'), request.user)
+    item_com = get_comments(item, request.data.get('sortType'), request.user)
     print(request.data.get('sortType'))
-    ser = PostSerializer(item, context={'req_user': request.user, 'comments': item_com})
+    ser = PostSerializer(
+        item, context={'req_user': request.user, 'comments': item_com})
     return Response(ser.data, status=200)
    # print(request.user)
-    #print(ser.data,)
-    
+    # print(ser.data,)
+
 
 # функция для сериализатора комментов (сортировки)
 def get_comments(item, request, user):
     if request == 'old':
-        cms=item.comments.order_by('id')
+        cms = item.comments.order_by('id')
         cms_ser = CommentSerializer(cms, many=True, context={'req_user': user})
         return cms_ser.data
     else:
-        cms=item.comments.order_by('-id')
+        cms = item.comments.order_by('-id')
         cms_ser = CommentSerializer(cms, many=True, context={'req_user': user})
         return cms_ser.data
-    

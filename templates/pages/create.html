@@ -4,14 +4,15 @@
 {% block title %}{{title}}{% endblock title %}
 
 {% block content %}
-<div class = "container overflow-auto p-2 position-relative bg-white border border-info border-4 rounded-3" style="width: 325px; margin-top: 5%;">
+<div class="container overflow-auto p-2 position-relative bg-white border border-info border-4 rounded-3"
+    style="width: 325px; margin-top: 5%;">
     <h2 class="text-center">{{title}}</h2>
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <p>{{form.title.label}}
-        {{form.title}}</p>
+            {{form.title}}</p>
         <p>{{form.category.label}}
-        {{form.category}}</p>
+            {{form.category}}</p>
         <p>{{form.image}}</p>
         <button type="submit" class='btn btn-success my-5 position-relative top-50 start-50 translate-middle'>
             {{ btn_text }}

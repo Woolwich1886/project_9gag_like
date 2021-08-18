@@ -4,19 +4,25 @@ from django.shortcuts import redirect, render
 
 # Create your views here.
 
-#каждый пост отдельно
+# Контроллер отображения каждого поста отдельно
 def detail_postview(request, postid, *args, **kwargs):
     return render(request, 'pages/detail.html', context={'postid': postid})
 
-#Вью главной страницы
+# Контроллер главной страницы
+
+
 def postview(request, *args, **kwargs):
     return render(request, 'pages/home.html')
 
-#Вбю по категориям
+# Контроллер отображения по категориям
+
+
 def categoryview(request, category, *args, **kwargs):
     return render(request, 'pages/category.html', context={'category': category})
 
-#Вью создания поста
+# Контроллер создания поста
+
+
 def createview(request, *args, **kwargs):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -28,7 +34,7 @@ def createview(request, *args, **kwargs):
                 return redirect('/')
         else:
             form = PostForm()
-                
+
     context = {
         'form': form,
         'title': 'Создать пост',

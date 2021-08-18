@@ -1,8 +1,8 @@
 from django.urls import path
 
-from .views import (api_profile_view, 
+from .views import (api_profile_view,
                     api_postview_by_user,
-                    api_profile_imageview, 
+                    api_profile_imageview,
                     )
 
 
@@ -14,6 +14,6 @@ urlpatterns = [
     path('api/profile/<str:username>/', api_postview_by_user),
     path('api/profile/<str:username>/badge/', api_profile_imageview)
 ]
-#if settings.DEBUG:
-
-    #urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

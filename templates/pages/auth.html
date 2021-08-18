@@ -5,51 +5,54 @@
 
 {% block content %}
 
-<div class = "container overflow-auto p-2 position-relative bg-white border border-info border-4 rounded-3" style="width: 325px; margin-top: 5%;">
-<h2 class = "text-center">{{ title }}</h2>
-<form method="POST">
-    {% csrf_token %}
-    <p>{{ form.username.label}}
-    {{ form.username}}</p>
-    <p>{{ form.password1.label }}
-    {{ form.password1 }}</p>
-    <p> {{ form.password2.label }}
-    {{ form.password2 }}</p>
-    <p>{{ form.first_name.label }}
-    {{ form.first_name }}</p>
-    <p> {{ form.second_name.label }}
-    {{ form.second_name }}</p>
-    <button type="submit" class='btn btn-success my-5 position-relative top-50 start-50 translate-middle'>
-        {{ btn_text }}
-    </button>
-</form>
-<div class="text-center">
-    {% for error in form.username.errors  %}
-    <p >{{error}}</p>
-    {% endfor %}
-    {% for error in form.password2.errors  %}
-    <p >{{error}}</p>
-    {% endfor %}
-    {% for error in form.second_name.errors  %}
-    <p >{{error}}</p>
-    {% endfor %}
-    {% for error in form.first_name.errors  %}
-    <p >{{error}}</p>
-    {% endfor %}
-    {% for message in messages  %}
-    <p >{{message}}</p>
-    {% endfor %}
-</div>
+<div class="container overflow-auto p-2 position-relative bg-white border border-info border-4 rounded-3"
+    style="width: 325px; margin-top: 5%;">
+    <h2 class="text-center">{{ title }}</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <p>{{ form.username.label}}
+            {{ form.username}}</p>
+        <p>{{ form.password1.label }}
+            {{ form.password1 }}</p>
+        <p> {{ form.password2.label }}
+            {{ form.password2 }}</p>
+        <p>{{ form.first_name.label }}
+            {{ form.first_name }}</p>
+        <p> {{ form.second_name.label }}
+            {{ form.second_name }}</p>
+        <button type="submit" class='btn btn-success my-5 position-relative top-50 start-50 translate-middle'>
+            {{ btn_text }}
+        </button>
+    </form>
+    <div class="text-center">
+        {% for error in form.username.errors %}
+        <p>{{error}}</p>
+        {% endfor %}
+        {% for error in form.password2.errors %}
+        <p>{{error}}</p>
+        {% endfor %}
+        {% for error in form.second_name.errors %}
+        <p>{{error}}</p>
+        {% endfor %}
+        {% for error in form.first_name.errors %}
+        <p>{{error}}</p>
+        {% endfor %}
+        {% for message in messages %}
+        <p>{{message}}</p>
+        {% endfor %}
+    </div>
 
-<div class="text-center">
-    {% if  title == 'Авторизация'  %}  
-    <p>Еще не зарегистрированы?
-    <br>Пройдите <a href='{% url 'registration' %}'>регистрацию</a></p>
-    {% else %}
-    <p>Ужа зарегистрированы?
-    <br><a href='{% url 'login' %}'>Авторизуйтесь</a></p>
-    {% endif %}
-</div>
+    <div class="text-center">
+        {% if title == 'Авторизация' %}
+        <p>Еще не зарегистрированы?
+            <br>Пройдите <a href='{% url ' registration' %}'>регистрацию</a>
+        </p>
+        {% else %}
+        <p>Ужа зарегистрированы?
+            <br><a href='{% url ' login' %}'>Авторизуйтесь</a>
+        </p>
+        {% endif %}
+    </div>
 </div>
 
 {% endblock content %}
